@@ -10,7 +10,7 @@
         <name>Maintained by the Rust Teams.</name>
         <uri>https://github.com/rust-lang/blog.rust-lang.org/</uri>
     </author>
-    <updated>2019-10-11T20:57:19Z</updated>
+    <updated>2019-10-14T13:09:37Z</updated>
 
     
     <entry>
@@ -253,7 +253,7 @@ that more concrete with a very rough approximation:&lt;/p&gt;
 &lt;p&gt;The compiler matches against the chain expecting an &lt;code&gt;ItemObligation&lt;/code&gt; and some &lt;code&gt;DerivedObligation&lt;/code&gt;s
 containing generators, which identifies the error we want to improve. Using information from these
 obligations, rustc can construct the specialized error shown above - if you'd like to see what the
-actual implementation looks like, check out PR &lt;a href=&quot;https://github.com/rust-lang/rust/pulls/64895&quot;&gt;#64895&lt;/a&gt;.&lt;/p&gt;
+actual implementation looks like, check out PR &lt;a href=&quot;https://github.com/rust-lang/rust/pull/64895&quot;&gt;#64895&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;If you're interested in improving diagnostics like this, or even just fixing bugs, consider
 contributing to the compiler! There are many working groups to join and resources to help you get
 started (like the &lt;a href=&quot;https://rust-lang.github.io/rustc-guide&quot;&gt;rustc guide&lt;/a&gt; or the &lt;a href=&quot;https://rust-lang.github.io/compiler-team&quot;&gt;compiler team documentation&lt;/a&gt;).&lt;/p&gt;
