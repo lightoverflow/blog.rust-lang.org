@@ -10,7 +10,7 @@
         <name>Maintained by the Rust Team.</name>
         <uri>https://github.com/rust-lang/blog.rust-lang.org/</uri>
     </author>
-    <updated>2019-10-15T17:29:16Z</updated>
+    <updated>2019-10-15T18:26:21Z</updated>
 
     
     <entry>
@@ -44,7 +44,7 @@
 &lt;h3&gt;&lt;a href=&quot;#installing-the-latest-compatible-nightly&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;installing-the-latest-compatible-nightly&quot;&gt;&lt;/a&gt;Installing the latest compatible nightly&lt;/h3&gt;
 &lt;p&gt;While most components are guaranteed to be present on stable releases of &lt;a href=&quot;https://forge.rust-lang.org/release/platform-support.html&quot;&gt;tier 1 platforms&lt;/a&gt;, the same guarantee doesn't apply to nightly builds. Frequently, tools such as &lt;code&gt;rustfmt&lt;/code&gt;, &lt;code&gt;clippy&lt;/code&gt;, or &lt;code&gt;rls&lt;/code&gt; are missing in the latest nightly. If you depend on these tools, that makes updating nighties hard, as rustup will prevent the upgrade if a component you previously installed is missing.&lt;/p&gt;
 &lt;p&gt;Starting from rustup 1.20.0, if a component you previously installed is missing in the latest nightly, &lt;code&gt;rustup update&lt;/code&gt; will walk backwards in time to find the most recent release with all the components you need. If there are no new nightlies with all the components you need you'll either need to wait or remove some of them.&lt;/p&gt;
-&lt;p&gt;Along with this change, rustup 1.20.0 introduces the &lt;code&gt;--component&lt;/code&gt;/&lt;code&gt;-c&lt;/code&gt; and &lt;code&gt;--target&lt;/code&gt;/&lt;code&gt;-t&lt;/code&gt; flags to the &lt;code&gt;rustup toolchain install&lt;/code&gt; command, allowing you to add components and targets as the toolchain is installed. These flags will also search past nightlies if the current one does not feature all the requested components.&lt;/p&gt;
+&lt;p&gt;Along with this change, rustup 1.20.0 introduces the &lt;code&gt;--component&lt;/code&gt;/&lt;code&gt;-c&lt;/code&gt; and &lt;code&gt;--target&lt;/code&gt;/&lt;code&gt;-t&lt;/code&gt; options to the &lt;code&gt;rustup toolchain install&lt;/code&gt; command, allowing you to add components and targets as the toolchain is installed. These flags will also search past nightlies if the current one does not feature all the requested components.&lt;/p&gt;
 &lt;h3&gt;&lt;a href=&quot;#improvements-to-rustup-doc&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;improvements-to-rustup-doc&quot;&gt;&lt;/a&gt;Improvements to &lt;code&gt;rustup doc&lt;/code&gt;&lt;/h3&gt;
 &lt;p&gt;The &lt;code&gt;rustup doc&lt;/code&gt; command opens the locally installed documentation on your browser, without any Internet connection required. rustup 1.20.0 enhances the command allowing you to open directly the API documentation of a specific item. For example to look at the documentation of &lt;a href=&quot;https://doc.rust-lang.org/std/iter/trait.Iterator.html&quot;&gt;&lt;code&gt;Iterator&lt;/code&gt;&lt;/a&gt; you can use:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;rustup doc std::iter::Iterator
