@@ -10,7 +10,7 @@
         <name>Maintained by the Rust Teams.</name>
         <uri>https://github.com/rust-lang/blog.rust-lang.org/</uri>
     </author>
-    <updated>2019-10-15T07:35:42Z</updated>
+    <updated>2019-10-15T14:21:28Z</updated>
 
     
     <entry>
@@ -200,7 +200,7 @@ help answer. Let's start by looking at &lt;code&gt;foo&lt;/code&gt;:&lt;/p&gt;
     baz().await
 } // &amp;lt;- `g` is dropped here
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;code&gt;bar&lt;/code&gt; unlocks the mutex before &lt;code&gt;await&lt;/code&gt;ing &lt;code&gt;baz&lt;/code&gt;. &lt;code&gt;std::sync::MutexGuard&amp;lt;u32&amp;gt;&lt;/code&gt; does not implement
+&lt;p&gt;&lt;code&gt;bar&lt;/code&gt; locks the mutex before &lt;code&gt;await&lt;/code&gt;ing &lt;code&gt;baz&lt;/code&gt;. &lt;code&gt;std::sync::MutexGuard&amp;lt;u32&amp;gt;&lt;/code&gt; does not implement
 &lt;code&gt;Send&lt;/code&gt; and lives across the &lt;code&gt;baz().await&lt;/code&gt; point (because &lt;code&gt;g&lt;/code&gt; is dropped at the end of the scope)
 which causes the entire future not to implement &lt;code&gt;Send&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;That wasn't obvious from the error: we had to know that futures might implement &lt;code&gt;Send&lt;/code&gt; depending

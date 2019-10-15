@@ -205,7 +205,7 @@ help answer. Let's start by looking at <code>foo</code>:</p>
     baz().await
 } // &lt;- `g` is dropped here
 </code></pre>
-<p><code>bar</code> unlocks the mutex before <code>await</code>ing <code>baz</code>. <code>std::sync::MutexGuard&lt;u32&gt;</code> does not implement
+<p><code>bar</code> locks the mutex before <code>await</code>ing <code>baz</code>. <code>std::sync::MutexGuard&lt;u32&gt;</code> does not implement
 <code>Send</code> and lives across the <code>baz().await</code> point (because <code>g</code> is dropped at the end of the scope)
 which causes the entire future not to implement <code>Send</code>.</p>
 <p>That wasn't obvious from the error: we had to know that futures might implement <code>Send</code> depending
