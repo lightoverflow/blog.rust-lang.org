@@ -10,7 +10,7 @@
         <name>Maintained by the Rust Teams.</name>
         <uri>https://github.com/rust-lang/blog.rust-lang.org/</uri>
     </author>
-    <updated>2019-10-15T14:21:28Z</updated>
+    <updated>2019-10-15T16:53:00Z</updated>
 
     
     <entry>
@@ -168,8 +168,19 @@ variables that are used across await points (which desugar to generator yields):
 } // &amp;lt;- `g` and `x` dropped here, after await point
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code class=&quot;language-rust&quot;&gt;enum BarGenerator {
-    Unresumed { x: &amp;amp;Mutex&amp;lt;u32&amp;gt;, g: MutexGuard&amp;lt;'_, u32&amp;gt;, },
-    Suspend0 { x: &amp;amp;Mutex&amp;lt;u32&amp;gt;, g: MutexGuard&amp;lt;'_, u32&amp;gt;, }
+    // `bar`'s parameters.
+    Unresumed { x: &amp;amp;Mutex&amp;lt;u32&amp;gt; },
+
+    Suspend0 {
+        // Future returned by `baz`, which is being polled.
+        baz_future: BazGenerator,
+
+        // Locals that are used across the await point.
+        x: &amp;amp;Mutex&amp;lt;u32&amp;gt;,
+        g: MutexGuard&amp;lt;'_, u32&amp;gt;,
+    },
+
+    Returned { value: () }
 }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;If you want to learn more about the &lt;code&gt;async fn&lt;/code&gt; implementation details, then Tyler Mandry has

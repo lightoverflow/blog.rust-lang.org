@@ -173,8 +173,19 @@ variables that are used across await points (which desugar to generator yields):
 } // &lt;- `g` and `x` dropped here, after await point
 </code></pre>
 <pre><code class="language-rust">enum BarGenerator {
-    Unresumed { x: &amp;Mutex&lt;u32&gt;, g: MutexGuard&lt;'_, u32&gt;, },
-    Suspend0 { x: &amp;Mutex&lt;u32&gt;, g: MutexGuard&lt;'_, u32&gt;, }
+    // `bar`'s parameters.
+    Unresumed { x: &amp;Mutex&lt;u32&gt; },
+
+    Suspend0 {
+        // Future returned by `baz`, which is being polled.
+        baz_future: BazGenerator,
+
+        // Locals that are used across the await point.
+        x: &amp;Mutex&lt;u32&gt;,
+        g: MutexGuard&lt;'_, u32&gt;,
+    },
+
+    Returned { value: () }
 }
 </code></pre>
 <p>If you want to learn more about the <code>async fn</code> implementation details, then Tyler Mandry has
