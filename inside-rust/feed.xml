@@ -10,7 +10,7 @@
         <name>Maintained by the Rust Teams.</name>
         <uri>https://github.com/rust-lang/blog.rust-lang.org/</uri>
     </author>
-    <updated>2019-10-17T17:16:48Z</updated>
+    <updated>2019-10-17T17:37:29Z</updated>
 
     
     <entry>
@@ -19,7 +19,7 @@
         <published>2019-10-17T00:00:00Z</published>
         <updated>2019-10-17T00:00:00Z</updated>
         <id>https://blog.rust-lang.org/inside-rust/2019/10/17/ecstatic-morse-for-compiler-contributors.html</id>
-        <content type="html" xml:base="https://blog.rust-lang.org/inside-rust/2019/10/17/ecstatic-morse-for-compiler-contributors.html">&lt;p&gt;Please welcome &lt;a href=&quot;https://github.com/ecstatic-morse&quot;&gt;@ecstatic-morse&lt;/a&gt; to the [compiler contributors] group!
+        <content type="html" xml:base="https://blog.rust-lang.org/inside-rust/2019/10/17/ecstatic-morse-for-compiler-contributors.html">&lt;p&gt;Please welcome &lt;a href=&quot;https://github.com/ecstatic-morse&quot;&gt;@ecstatic-morse&lt;/a&gt; to the &lt;a href=&quot;https://rust-lang.github.io/rfcs/2689-compiler-team-contributors.html&quot;&gt;compiler contributors&lt;/a&gt; group!
 They're working to make compile-time evaluation more expressive by
 enabling &lt;code&gt;if&lt;/code&gt;, &lt;code&gt;match&lt;/code&gt; and other control flow in constants. As one of
 their first major contributions, they implemented a dataflow analysis
