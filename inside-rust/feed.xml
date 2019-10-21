@@ -10,8 +10,81 @@
         <name>Maintained by the Rust Teams.</name>
         <uri>https://github.com/rust-lang/blog.rust-lang.org/</uri>
     </author>
-    <updated>2019-10-17T17:37:29Z</updated>
+    <updated>2019-10-21T12:57:59Z</updated>
 
+    
+    <entry>
+        <title>2019-10-17 Compiler Team Triage Meeting</title>
+        <link rel="alternate" href="https://blog.rust-lang.org/inside-rust/2019/10/21/compiler-team-meeting.html" type="text/html" title="2019-10-17 Compiler Team Triage Meeting" />
+        <published>2019-10-21T00:00:00Z</published>
+        <updated>2019-10-21T00:00:00Z</updated>
+        <id>https://blog.rust-lang.org/inside-rust/2019/10/21/compiler-team-meeting.html</id>
+        <content type="html" xml:base="https://blog.rust-lang.org/inside-rust/2019/10/21/compiler-team-meeting.html">&lt;p&gt;The compiler team had our weekly triage meeting on 2019-10-17.
+You can find the &lt;a href=&quot;https://rust-lang.github.io/compiler-team/minutes/triage-meeting/2019-10-17/&quot;&gt;minutes&lt;/a&gt; on the &lt;a href=&quot;https://github.com/rust-lang/compiler-team&quot;&gt;compiler-team&lt;/a&gt; repository.
+Each week, we have general announcements from the team followed by check-ins from two of the compiler team working groups.&lt;/p&gt;
+&lt;h2&gt;&lt;a href=&quot;#announcements&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;announcements&quot;&gt;&lt;/a&gt;Announcements&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Design meeting on &lt;a href=&quot;https://github.com/rust-lang/compiler-team/issues/186&quot;&gt;debuginfo strategy&lt;/a&gt; tomorrow (2019-10-18) on Zulip.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://rust-lang.zulipchat.com/#narrow/stream/131828-t-compiler/topic/design.20meeting.202019-10-18/near/178476377&quot;&gt;Link to full meeting&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The traits working group had a &lt;a href=&quot;https://github.com/rust-lang/wg-traits/tree/master/minutes&quot;&gt;design meeting&lt;/a&gt; yesterday on lazy normalization.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/nikomatsakis&quot;&gt;@nikomatsakis&lt;/a&gt; has been looking into lazy normalization specifically for constants and hopes to have some notes to share soon.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The LLVM ICE-breakers working group is nearly ready to go live.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/spastorino&quot;&gt;@spastorino&lt;/a&gt; has nearly finished interning &lt;code&gt;Place&lt;/code&gt; projections which is an incremental step to MIR 2.0.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/centril&quot;&gt;@centril&lt;/a&gt; is continuing to work on splitting &lt;code&gt;libsyntax&lt;/code&gt; apart which will decrease the amount of code &lt;code&gt;librustc&lt;/code&gt; depends on.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;&lt;a href=&quot;#working-group-sync&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;working-group-sync&quot;&gt;&lt;/a&gt;Working group sync&lt;/h2&gt;
+&lt;h3&gt;&lt;a href=&quot;#wg-mir-opt&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;wg-mir-opt&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://rust-lang.github.io/compiler-team/working-groups/mir-opt/&quot;&gt;wg-mir-opt&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/wesleywiser&quot;&gt;@wesleywiser&lt;/a&gt; Moved promoted MIR out of &lt;code&gt;mir::Body&lt;/code&gt; &lt;a href=&quot;https://github.com/rust-lang/rust/pull/63580&quot;&gt;#63580&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/wesleywiser&quot;&gt;@wesleywiser&lt;/a&gt; Reimplemented the &lt;code&gt;ConstProp&lt;/code&gt; optimization pass on top of the existing const eval code &lt;a href=&quot;https://github.com/rust-lang/rust/pull/64419&quot;&gt;#64419&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/spastorino&quot;&gt;@spastorino&lt;/a&gt; Converted &lt;code&gt;mir::Place&lt;/code&gt; to no longer be a recursive data structure &lt;a href=&quot;https://github.com/rust-lang/rust/pull/63420&quot;&gt;#63420&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;There is ongoing work in both const prop and place refactorings.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;We've figured out a plan for &amp;quot;weird&amp;quot; place projections like dereferences (virtual locals).&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&quot;https://rust-lang.zulipchat.com/#narrow/stream/131828-t-compiler/topic/weekly.20meeting.202019-10-17.20.2354818/near/178389131&quot;&gt;Link to full conversation&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;a href=&quot;#wg-meta&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;wg-meta&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://rust-lang.github.io/compiler-team/working-groups/meta/&quot;&gt;wg-meta&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;The &lt;a href=&quot;https://blog.rust-lang.org/inside-rust/index.html&quot;&gt;Inside Rust&lt;/a&gt; blog has launched.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The &lt;a href=&quot;https://rust-lang.github.io/rustc-guide/ice-breaker/about.html&quot;&gt;ICE-Breaker group&lt;/a&gt; has been formed!&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The &lt;a href=&quot;https://rust-lang.github.io/rustc-guide/ice-breaker/llvm.html&quot;&gt;LLVM ICE-Breaker group&lt;/a&gt; is also being formed.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&quot;https://rust-lang.zulipchat.com/#narrow/stream/131828-t-compiler/topic/weekly.20meeting.202019-10-17.20.2354818/near/178389266&quot;&gt;Link to full conversation&lt;/a&gt;&lt;/p&gt;
+</content>
+
+        <author>
+            <name>Wesley Wiser</name>
+        </author>
+    </entry>
     
     <entry>
         <title>Please welcome ecstatic-morse to compiler-contributors</title>
