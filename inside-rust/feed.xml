@@ -10,7 +10,7 @@
         <name>Maintained by the Rust Teams.</name>
         <uri>https://github.com/rust-lang/blog.rust-lang.org/</uri>
     </author>
-    <updated>2019-10-22T17:37:07Z</updated>
+    <updated>2019-10-22T17:46:15Z</updated>
 
     
     <entry>
@@ -21,7 +21,7 @@
         <id>https://blog.rust-lang.org/inside-rust/2019/10/22/LLVM-ICE-breakers.html</id>
         <content type="html" xml:base="https://blog.rust-lang.org/inside-rust/2019/10/22/LLVM-ICE-breakers.html">&lt;p&gt;Today I'm announcing a new experiment in the compiler team, the &lt;strong&gt;LLVM ICE-breaker group&lt;/strong&gt;. If you're familiar with LLVM and would like to contribute to rustc -- but without taking on a large commitment -- then the LLVM ICE-breaker group might well be for you!&lt;/p&gt;
 &lt;h3&gt;&lt;a href=&quot;#what-is-the-llvm-ice-breaker-group&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;what-is-the-llvm-ice-breaker-group&quot;&gt;&lt;/a&gt;What is the LLVM ICE-breaker group?&lt;/h3&gt;
-&lt;p&gt;At its heart, the LLVM ICE-breaker group is just a list of people who would like to be notified when we come across LLVM bugs. You can add yourself to this list very easily -- just &lt;a href=&quot;https://rust-lang.github.io/rustc-guide/ice-breaker/about.html#join&quot;&gt;open a PR&lt;/a&gt;! Once you do so, you'll start to get pings when we come across suitable bugs. If you have some time, maybe you can fix one of them, or at least offer some words of wisdom to help somebody else figure out what's going on.&lt;/p&gt;
+&lt;p&gt;At its heart, the LLVM ICE-breaker group is just a list of people who would like to be notified when we come across LLVM bugs. You can add yourself to this list very easily -- just &lt;a href=&quot;https://rust-lang.github.io/rustc-guide/ice-breaker/about.html#join&quot;&gt;open a PR&lt;/a&gt;! When we come across a suitable bug, we'll write a message that &lt;code&gt;@&lt;/code&gt;-mentions every Github user on that list. If you have some time, maybe you can fix one of them, or at least offer some words of wisdom to help somebody else figure out what's going on.&lt;/p&gt;
 &lt;p&gt;There are a few other things associated with the group too, however. For example, we've got a &lt;a href=&quot;https://rust-lang.github.io/rustc-guide/ice-breaker/llvm.html&quot;&gt;guide&lt;/a&gt; that offers some tips for how to fix LLVM-related bugs and may help you get started (particularly if you're not that familiar with rustc).&lt;/p&gt;
 &lt;h3&gt;&lt;a href=&quot;#what-kind-of-bugs-are-we-talking-about&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;what-kind-of-bugs-are-we-talking-about&quot;&gt;&lt;/a&gt;What kind of bugs are we talking about?&lt;/h3&gt;
 &lt;p&gt;The goal is to identify &amp;quot;self-contained&amp;quot; bugs that are unlikely to require large-scale compiler refactorings or to get entangled in other big projects.&lt;/p&gt;
