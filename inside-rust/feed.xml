@@ -10,7 +10,7 @@
         <name>Maintained by the Rust Teams.</name>
         <uri>https://github.com/rust-lang/blog.rust-lang.org/</uri>
     </author>
-    <updated>2019-10-22T18:57:05Z</updated>
+    <updated>2019-10-22T22:21:02Z</updated>
 
     
     <entry>
@@ -88,7 +88,7 @@ europeans and at the same time for everyone else on the team.&lt;/p&gt;
 &lt;li&gt;reducing LLVM IR to minimal problem cases;&lt;/li&gt;
 &lt;li&gt;and so forth.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;(For that matter, feel freeo to join the group even if you're &lt;em&gt;not&lt;/em&gt; all that familiar with LLVM -- no better way to learn!)&lt;/p&gt;
+&lt;p&gt;(For that matter, feel free to join the group even if you're &lt;em&gt;not&lt;/em&gt; all that familiar with LLVM -- no better way to learn!)&lt;/p&gt;
 &lt;h3&gt;&lt;a href=&quot;#whats-with-the-name-ice-breaker-anyway?&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;whats-with-the-name-ice-breaker-anyway?&quot;&gt;&lt;/a&gt;What's with the name ICE-breaker anyway?&lt;/h3&gt;
 &lt;p&gt;An &amp;quot;ICE&amp;quot; is an &amp;quot;internal compiler error&amp;quot;. It actually refers specifically to the case where the compiler panics (which tends to be an easy sort of bug to fix). In fact, very few LLVM bugs cause real ICEs, but the name was too good to pass up.&lt;/p&gt;
 &lt;p&gt;But of course we also hope that these ICE-breaker groups can help people to get more acquainted with hacking on rustc; to &lt;a href=&quot;https://en.wiktionary.org/wiki/break_the_ice&quot;&gt;&amp;quot;break the ice&amp;quot;&lt;/a&gt;, if you will (ha! I kill me).&lt;/p&gt;
