@@ -162,7 +162,13 @@ concrete. Let's see what it means to evaluate an expression of the form
 with one set of values for <code>a</code>, <code>b</code>, and <code>c</code>, and then evaluating it a second
 time with a different value for <code>a</code>. For the first time around, <code>a</code> will be
 <code>1</code>, <code>b</code> will be <code>2</code>, and <code>c</code> will be <code>3</code>:</p>
-<!-- raw HTML omitted -->
+<!--
+       a+b×c=7
+       /    \
+      /     b×c=6
+     /     /   \
+    a=1   b=2  c=3
+-->
 <p><img src="/images/2016-08-Incremental/algebra-initial.svg" alt="Initial Computation of a+b×c" /></p>
 <p>Assume that we &quot;saved&quot; the intermediate results at each step, that is, we
 remember somewhere that <code>b×c</code> is <code>6</code> and <code>a+b×c</code> is <code>7</code>. Now, in the second
@@ -172,7 +178,13 @@ already know that <code>b×c = 6</code>, so we don't have to perform that comput
 again, and can rather skip directly to <code>(a = 4) + (b×c = 6)</code>. We thus have computed
 the value of our expression in just one step instead of two, sparing us an
 entire, tedious multiplication.</p>
-<!-- raw HTML omitted -->
+<!--
+       a+b×c=10
+       /    \
+      /     b×c=6
+     /     /   \
+    a=4   b=2  c=3
+-->
 <p><img src="/images/2016-08-Incremental/algebra-update.svg" alt="Updating the Computation" /></p>
 <p>Let's see how this scheme translates to the compiler.</p>
 <h1><a href="#an-incremental-compiler" aria-hidden="true" class="anchor" id="an-incremental-compiler"></a>An Incremental Compiler</h1>
@@ -185,7 +197,18 @@ on disk instead. If there is a valid entry in the cache, the compiler can just
 skip computing that particular piece of data. Let's take a look at a (simplified)
 overview of the different compilation phases and the intermediate results they
 produce:</p>
-<!-- raw HTML omitted -->
+<!--
+* Diagram: compilation phases and their intermediate results
+
+         AST        type info      object
+                       MIR          code        binary
+
+       A A A A     T T T M M M     O O O O
+       A A A A     T T T M M M     O O O O        B
+       A A A A     T T T M M M     O O O O
+    >===========>===============>===========>===========>
+        parse       analysis       codegen     linking
+-->
 <p><img src="/images/2016-08-Incremental/compiler-phases.svg" alt="Compiler Phases and their By-Products" /></p>
 <p>First the compiler will parse the source code into an abstract syntax tree
 (AST). The AST then goes through the analysis phase which produces type
@@ -215,10 +238,24 @@ results and their individual &quot;up-to-dateness&quot; in a straightforward way
 result</strong> is represented as a <strong>node</strong> in a directed graph. The <strong>edges</strong> in the
 graph, on the other hand, represent which intermediate result or input can have
 an <strong>influence</strong> on some other intermediate result.</p>
-<!-- raw HTML omitted -->
+<!-- edited out
+More formally, let `v` be
+some intermediate result and `N(v)` be the dependency graph node representing
+`v` in the graph. Further, let `xᵢ` be the intermediate results and inputs
+that have to be **read** when computing `v` and let `N(xᵢ)`
+be their representing nodes. Then the dependency graph will contain the edges
+`N(v) → N(xᵢ)` for all `i`. In other words, each edge records a dependency
+of one intermediate result on another.
+ -->
 <p>Let's go back to our algebra example to see what this looks like in
 practice:</p>
-<!-- raw HTML omitted -->
+<!--
+       a+b×c
+       /   \
+      /    b×c
+     /    /   \
+    a    b     c
+-->
 <p><img src="/images/2016-08-Incremental/algebra-dep-graph.svg" alt="Dependency Graph of a+b×c" /></p>
 <p>As you can see, we have nodes for the inputs <code>a</code>, <code>b</code>, and <code>c</code>, and nodes for
 the intermediate results <code>b×c</code> and <code>a+b×c</code>. The edges should come as no
@@ -228,7 +265,13 @@ exactly the same. Note, by the way, that the above graph is a tree just because
 the computation it models has the form of a tree. In general, dependency graphs
 are <strong>directed acyclic graphs</strong>, as would be the case if we would
 add another intermediate result <code>b×c+c</code> to our computation:</p>
-<!-- raw HTML omitted -->
+<!--
+       a+b×c   b×c+c
+       /   \  /  |
+      /    b×c   |
+     /    /   \ /
+    a    b     c
+-->
 <p><img src="/images/2016-08-Incremental/algebra-dep-graph-dag.svg" alt="Example of a non-tree Dependency Graph" /></p>
 <p>What makes this data structure really useful is that we can ask it questions
 of the form &quot;if X has changed, is Y still up-to-date?&quot;. We just take the node
@@ -251,7 +294,16 @@ is accessed, we know that it is being read and we know what it is being read
 <em>for</em> (the currently active node). This gives us both ends of the dependency edge
 and we can simply add it to the graph. At the end of the compilation sessions we
 have all our data nicely linked up, mostly automatically:</p>
-<!-- raw HTML omitted -->
+<!--
+         AST        type info      object
+                       MIR          code        binary
+
+       A A A A     T T T M M M     O O O O
+       A A A A     T T T M M M     O O O O        B
+       A A A A     T T T M M M     O O O O
+    >===========>===============>===========>===========>
+        parse       analysis       codegen     linking
+-->
 <p><img src="/images/2016-08-Incremental/compiler-dep-graph.svg" alt="Dependency Graph of Compilation Data" /></p>
 <p>This dependency graph is then stored in the incremental compilation cache
 directory along with the cache entries it describes.</p>
@@ -259,7 +311,16 @@ directory along with the cache entries it describes.</p>
 (=AST nodes) have changed by comparing them to the previous version. Given the
 graph and the set of changed inputs, we can easily find all cache entries that
 are not up-to-date anymore and just remove them from the cache:</p>
-<!-- raw HTML omitted -->
+<!--
+         AST        type info      object
+                       MIR          code        binary
+
+       A _ A _     _ _ T M _ _     O _ O _
+       _ A A A     T _ T _ _ M     O _ _ _        _
+       A A _ A     T _ _ M _ M     O O _ _
+    >===========>===============>===========>===========>
+        parse       analysis       codegen     linking
+-->
 <p><img src="/images/2016-08-Incremental/compiler-cache-purge.svg" alt="Using the Dependency Graph to Validate the Incremental Compilation Cache" /></p>
 <p>Anything that has survived this cache validation phase can safely be re-used
 during the current compilation session.</p>
@@ -299,7 +360,19 @@ recompiled.</p>
 alpha version now, we chose to focus on caching object files. Why did we do
 that? Let's take a look at the compilation phases again and especially at how
 much time is spent in each one on average:</p>
-<!-- raw HTML omitted -->
+<!--
+         AST        type info      object
+                       MIR          code        binary
+
+       A A A A     T T T M M M     O O O O
+       A A A A     T T T M M M     O O O O        B
+       A A A A     T T T M M M     O O O O
+    >===========>===============>===========>===========>
+        parse       analysis       codegen     linking
+                                   optimize
+
+TIME:    5%            20%         **65%**       10%
+-->
 <p><img src="/images/2016-08-Incremental/compiler-phases-cost.svg" alt="Relative Cost of Compilation Phases" /></p>
 <p>As you can see, the Rust compiler spends most of its time in the optimization
 and codegen passes. Consequently, if this phase can be skipped at least for
@@ -384,7 +457,7 @@ over to the <a href="https://github.com/rust-lang/rust/issues/36350">tracking is
 comment!</p>
 </li>
 <li>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --> We are working on the
+<p><a name="tool"></a> We are working on the
 <a href="https://github.com/nikomatsakis/cargo-incremental"><em>cargo incremental</em></a> tool (implemented as a Cargo
 subcommand for hassle-free installation and usage) that will walk a projects
 git history, compiling successive versions of the source code and
