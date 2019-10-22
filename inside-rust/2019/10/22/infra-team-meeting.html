@@ -2,19 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>The &quot;Inside Rust&quot; Blog</title>
+    <title>2019-10-22 Infrastructure Team Meeting | Inside Rust Blog</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="Empowering everyone to build reliable and efficient software.">
      <!-- Twitter card -->
  <meta name="twitter:card" content="summary">
  <meta name="twitter:site" content="@rustlang">
  <meta name="twitter:creator" content="@rustlang">
- <meta name="twitter:title" content="The &quot;Inside Rust&quot; Blog">
+ <meta name="twitter:title" content="2019-10-22 Infrastructure Team Meeting | Inside Rust Blog">
  <meta name="twitter:description" content="Want to follow along with Rust development? Curious how you might get involved? Take a look!">
 <meta name="twitter:image" content="https://www.rust-lang.org/static/images/rust-social.jpg">
 
 <!-- Facebook OpenGraph -->
-<meta property="og:title" content="The &quot;Inside Rust&quot; Blog" />
+<meta property="og:title" content="2019-10-22 Infrastructure Team Meeting | Inside Rust Blog" />
 <meta property="og:description" content="Want to follow along with Rust development? Curious how you might get involved? Take a look!">
 <meta property="og:image" content="https://www.rust-lang.org/static/images/rust-social-wide.jpg" />
 <meta property="og:type" content="website" />
@@ -68,100 +68,62 @@
   </ul>
 </nav>
 
-<header class="mt3 mt0-ns mb4-ns">
-  <div class="container flex flex-column flex-row-l justify-between-l">
-    <div class="mw6-l">
-      <p>This is the <b>"Inside Rust"</b> blog. This blog is aimed at those who wish to follow along with Rust development. The various <a href="https://www.rust-lang.org/governance">Rust teams and working groups</a> use this blog to post status updates, calls for help, and other similar announcements.</p>
+<section id="2019-10-22 Infrastructure Team Meeting" class="white">
+  <div class="w-100 mw-none ph3 mw8-m mw8-l center f3">
+    <header>
+      <h2>2019-10-22 Infrastructure Team Meeting</h2>
+      <div class="highlight"></div>
+    </header>
+
+    <div class="publish-date-author">Oct. 22, 2019 &middot; Pietro Albini
+     on behalf of <a href="https://www.rust-lang.org/governance/teams/operations#infra">the infrastructure team</a> 
     </div>
-  </div>    
-  <div class="container flex flex-column flex-row-l justify-between-l">
-    <div class="mw8-l">
-      <p>
-      <b>See also:</b>
-      
-              <a href="/index.html">the main Rust blog</a>
-      
-      </p>
+
+    <div class="post">
+      <p>Meeting run by pietroalbini. Mintues written by pietroalbini.<br />
+Attending: aidanhs, alexcrichton, kennytm, Mark-Simulacrum, pietroalbini,
+shepmaster<br />
+<a href="https://discordapp.com/channels/442252698964721669/443148319431065610/636247640794857472">Start of the conversation</a></p>
+<h2><a href="#news-from-the-team" aria-hidden="true" class="anchor" id="news-from-the-team"></a>News from the team</h2>
+<ul>
+<li>All the AWS resources related to the bastion are now managed with Terraform.
+The documentation on <a href="https://github.com/rust-lang/infra-team/blob/master/docs/hosts/bastion.md#updating-the-whitelisted-ips">how to add whitelisted IPs</a> has
+also been updated.</li>
+<li>Crater agents are now deployed with Ansible, and the related AWS resources
+are now managed with Terraform. Agents are configured to check for updates
+every 5 minutes.</li>
+<li>There was an outage of docs.rs on Sunday night, the postmortem is going to be
+published soon on the &quot;Inside Rust&quot; blog and work on the action items from it
+is ongoing.</li>
+</ul>
+<h2><a href="#putting-a-cdn-in-front-of-the-ci-s3-buckets-pietroalbini)" aria-hidden="true" class="anchor" id="putting-a-cdn-in-front-of-the-ci-s3-buckets-pietroalbini)"></a>Putting a CDN in front of the CI S3 buckets (pietroalbini)</h2>
+<p>After an audit of our bandwidth usage for the <code>rust-lang-ci-sccache2</code> and
+<code>rust-lang-ci-mirrors</code> S3 buckets we discovered CI is pulling respectively 8.3
+TB and 1.4 TB from them each month. Egress from S3 is pricey (0.09$/GB), while
+for us egress from CloudFront is way cheaper (0.04$/month, as across all of our
+distributions we transfer out more than 150 TB each month). Putting CloudFront
+in front of them is going to save us an estimate of 485$/month.</p>
+<p>Thankfully all the data in those buckets is immutable (mirrors are versioned
+and all caches are addressed by hash), so there are not going to be any
+problems due to cache invalidation. Sccache doesn’t support querying a CDN yet
+but aidanhs is going to write some pointers and pietroalbini is going to do the
+implementation work. The caches CDN is also going to query a new
+<code>rust-lang-ci-caches</code> bucket, to avoid the old naming scheme.</p>
+<p>pietroalbini already setup
+<a href="https://ci-mirrors.rust-lang.org">ci-mirrors.rust-lang.org</a>, and is going to
+do the implementation work to both create a CDN distribution for caches and
+switch the CI to query the CDN.</p>
+<h2><a href="#moving-infra-documentation-to-the-forge-pietroalbini)" aria-hidden="true" class="anchor" id="moving-infra-documentation-to-the-forge-pietroalbini)"></a>Moving infra documentation to the forge (pietroalbini)</h2>
+<p>There is an effort in the project to centralize all the internal documentation
+<a href="https://forge.rust-lang.org">on the forge</a>. pietroalbini proposed to move all
+the infra team documentation to it. Everyone agreed, as we find value in having
+everything reachable in a single place. aidanhs pointed out that meeting
+minutes should not be migrated on the forge.</p>
+<h2><a href="#next-meeting-time" aria-hidden="true" class="anchor" id="next-meeting-time"></a>Next meeting time</h2>
+<p>Europe will switch DST next week, so the next meeting will be at -1 hours for
+europeans and at the same time for everyone else on the team.</p>
+
     </div>
-  </div>
-</header>
-
-<section id="posts" class="purple">
-   <div class="w-100 mw-none ph3 mw8-m mw9-l center f3">
-
-    <table class="post-list collapse w-100 f2-l f2-m f3-s">
-    
-      <tr>
-        <td class="bn"></td>
-        <td class="bn"><h3 class="f0-l f1-m f2-s mt4 mb0">Posts in 2019</h3></td>
-      </tr>
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;22</td>
-        <td class="bn"><a href="/inside-rust/2019/10/22/infra-team-meeting.html">2019-10-22 Infrastructure Team Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;22</td>
-        <td class="bn"><a href="/inside-rust/2019/10/22/LLVM-ICE-breakers.html">Announcing the LLVM ICE-breaker group</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;21</td>
-        <td class="bn"><a href="/inside-rust/2019/10/21/compiler-team-meeting.html">2019-10-17 Compiler Team Triage Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;17</td>
-        <td class="bn"><a href="/inside-rust/2019/10/17/ecstatic-morse-for-compiler-contributors.html">Please welcome ecstatic-morse to compiler-contributors</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;15</td>
-        <td class="bn"><a href="/inside-rust/2019/10/15/infra-team-meeting.html">2019-10-10 Infrastructure Team Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;15</td>
-        <td class="bn"><a href="/inside-rust/2019/10/15/compiler-team-meeting.html">2019-10-10 Compiler Team Triage Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;11</td>
-        <td class="bn"><a href="/inside-rust/2019/10/11/Lang-Team-Meeting.html">2019-10-10 Lang Team Triage Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;11</td>
-        <td class="bn"><a href="/inside-rust/2019/10/11/AsyncAwait-Not-Send-Error-Improvements.html">Improving async-await's &quot;Future is not Send&quot; diagnostic</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;07</td>
-        <td class="bn"><a href="/inside-rust/2019/10/07/AsyncAwait-WG-Focus-Issues.html">Async Foundations Update: Time for polish!</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;03</td>
-        <td class="bn"><a href="/inside-rust/2019/10/03/Keeping-secure-with-cargo-audit-0.9.html">Keeping Rust projects secure with cargo-audit 0.9: dependency trees, core advisories, unmaintained crates</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Sept.&nbsp;25</td>
-        <td class="bn"><a href="/inside-rust/2019/09/25/Welcome.html">Welcome to the Inside Rust blog!</a></td>
-      </tr>
-    
-    </table>
-
   </div>
 </section>
 
