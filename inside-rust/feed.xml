@@ -10,8 +10,82 @@
         <name>Maintained by the Rust Teams.</name>
         <uri>https://github.com/rust-lang/blog.rust-lang.org/</uri>
     </author>
-    <updated>2019-10-24T16:04:27Z</updated>
+    <updated>2019-10-24T16:08:26Z</updated>
 
+    
+    <entry>
+        <title>docs.rs outage postmortem</title>
+        <link rel="alternate" href="https://blog.rust-lang.org/inside-rust/2019/10/24/docsrs-outage-postmortem.html" type="text/html" title="docs.rs outage postmortem" />
+        <published>2019-10-24T00:00:00Z</published>
+        <updated>2019-10-24T00:00:00Z</updated>
+        <id>https://blog.rust-lang.org/inside-rust/2019/10/24/docsrs-outage-postmortem.html</id>
+        <content type="html" xml:base="https://blog.rust-lang.org/inside-rust/2019/10/24/docsrs-outage-postmortem.html">&lt;p&gt;At 2019-10-21 01:38 UTC the docs.rs website went down because no available disk
+space was left on the server hosting the application. Crate builds were failing
+since 2019-10-20 00:55 UTC due to the same reason.&lt;/p&gt;
+&lt;h2&gt;&lt;a href=&quot;#root-cause-of-the-outage&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;root-cause-of-the-outage&quot;&gt;&lt;/a&gt;Root cause of the outage&lt;/h2&gt;
+&lt;p&gt;docs.rs needs to store the built documentation on the filesystem before
+uploading it to the database, and it does so in the
+&lt;code&gt;/opt/docs-rs-prefix/documentations&lt;/code&gt; directory. docs.rs never cleared that
+directory though, so over time it started to increase its size until it caused
+this outage. Code to periodically purge temporary directories was present, but
+it was never configured to purge the one which caused the outage.&lt;/p&gt;
+&lt;h2&gt;&lt;a href=&quot;#resolution&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;resolution&quot;&gt;&lt;/a&gt;Resolution&lt;/h2&gt;
+&lt;p&gt;As the directory doesn’t contain any persistent data we cleared it and the web
+server was restarted. Once we were confident the situation was resolved all the
+crates that failed due to the outage were queued for a rebuild.&lt;/p&gt;
+&lt;h2&gt;&lt;a href=&quot;#postmortem&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;postmortem&quot;&gt;&lt;/a&gt;Postmortem&lt;/h2&gt;
+&lt;p&gt;The increased disk usage was gradual over weeks, slowly reaching 100% and
+causing the outage. While monitoring systems were in place and recorded graphs
+of the increase, no alert was configured so nobody noticed the problem. We need
+to add alerts when disk usage reaches 90%, so the problem can be investigated
+and dealt with on time.&lt;/p&gt;
+&lt;p&gt;Crates started to fail to build a day earlier, and close to no builds were
+successfully completed since then. We need to setup alerts when most of the
+builds are failing: as we don’t have the necessary metrics at the moment to
+reliably alert we'll have to add extra instrumentation as well.&lt;/p&gt;
+&lt;p&gt;Our response was slower due to issues with our on-call rotation for the
+service. The primary contacts don’t have the level of access required to
+increase the disk space of the instance (the temporary fix that was
+investigated at first but discarded after the discovery nobody awake could do
+it), and the backup contacts don’t have any production access or expertise on
+docs.rs.&lt;/p&gt;
+&lt;h2&gt;&lt;a href=&quot;#timeline-of-events&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;timeline-of-events&quot;&gt;&lt;/a&gt;Timeline of events&lt;/h2&gt;
+&lt;p&gt;Unless otherwise noted all events happened on 2019-10-21, and all times are in
+UTC.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;2019-10-20 00:55: crate builds started failing due to the low disk space&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;01:38: alerts fired for the docs.rs website being down, &lt;a href=&quot;https://github.com/ashleygwilliams&quot;&gt;ashleygwilliams&lt;/a&gt;
+(backup contact) got paged&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;01:39: &lt;a href=&quot;https://github.com/QuietMisdreavus&quot;&gt;QuietMisdreavus&lt;/a&gt; joins into the operations channel&lt;/li&gt;
+&lt;li&gt;01:39: &lt;a href=&quot;https://github.com/QuietMisdreavus&quot;&gt;QuietMisdreavus&lt;/a&gt; found the reason for the outage (full root partition)&lt;/li&gt;
+&lt;li&gt;01:52: &lt;a href=&quot;https://github.com/ashleygwilliams&quot;&gt;ashleygwilliams&lt;/a&gt; proposed to increase disk space, nobody with
+permissions required to so was awake or available though&lt;/li&gt;
+&lt;li&gt;01:56: &lt;a href=&quot;https://github.com/ashleygwilliams&quot;&gt;ashleygwilliams&lt;/a&gt; contacts &lt;a href=&quot;https://github.com/Mark-Simulacrum&quot;&gt;Mark-Simulacrum&lt;/a&gt;, who has the access
+required to increase disk space&lt;/li&gt;
+&lt;li&gt;01:57: &lt;a href=&quot;https://github.com/QuietMisdreavus&quot;&gt;QuietMisdreavus&lt;/a&gt; found the directory taking up all the disk space&lt;/li&gt;
+&lt;li&gt;02:00: &lt;a href=&quot;https://github.com/QuietMisdreavus&quot;&gt;QuietMisdreavus&lt;/a&gt; removed the directory taking up all the disk space&lt;/li&gt;
+&lt;li&gt;02:03: &lt;a href=&quot;https://github.com/QuietMisdreavus&quot;&gt;QuietMisdreavus&lt;/a&gt; restarted the web server&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;02:06: CDN propagated the changes, docs.rs back online&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;02:06: &lt;a href=&quot;https://github.com/Mark-Simulacrum&quot;&gt;Mark-Simulacrum&lt;/a&gt; joins into the operations channel&lt;/li&gt;
+&lt;li&gt;08:19: &lt;a href=&quot;https://github.com/pietroalbini&quot;&gt;pietroalbini&lt;/a&gt; added builds failed during the outage back into the
+queue&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;19:27: builds of the crates failed during the outage finished&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;&lt;a href=&quot;#action-items&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;action-items&quot;&gt;&lt;/a&gt;Action items&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Update the docs.rs source code to cleanup the offending directory
+automatically.&lt;/li&gt;
+&lt;li&gt;Add alerts when the available disk space on a server is below 10%.&lt;/li&gt;
+&lt;li&gt;Add alerts when most of the builds are failing.&lt;/li&gt;
+&lt;li&gt;Revisit the on-call rotation to make sure everyone on it has the
+permissions to either react to the incidents or escalate.&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+
+        <author>
+            <name>Pietro Albini</name>
+        </author>
+    </entry>
     
     <entry>
         <title>2019-10-22 Infrastructure Team Meeting</title>
@@ -100,80 +174,6 @@ europeans and at the same time for everyone else on the team.&lt;/p&gt;
 
         <author>
             <name>Niko Matsakis</name>
-        </author>
-    </entry>
-    
-    <entry>
-        <title>docs.rs outage postmortem</title>
-        <link rel="alternate" href="https://blog.rust-lang.org/inside-rust/2019/10/21/docsrs-outage-postmortem.html" type="text/html" title="docs.rs outage postmortem" />
-        <published>2019-10-21T00:00:00Z</published>
-        <updated>2019-10-21T00:00:00Z</updated>
-        <id>https://blog.rust-lang.org/inside-rust/2019/10/21/docsrs-outage-postmortem.html</id>
-        <content type="html" xml:base="https://blog.rust-lang.org/inside-rust/2019/10/21/docsrs-outage-postmortem.html">&lt;p&gt;At 2019-10-21 01:38 UTC the docs.rs website went down because no available disk
-space was left on the server hosting the application. Crate builds were failing
-since 2019-10-20 00:55 UTC due to the same reason.&lt;/p&gt;
-&lt;h2&gt;&lt;a href=&quot;#root-cause-of-the-outage&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;root-cause-of-the-outage&quot;&gt;&lt;/a&gt;Root cause of the outage&lt;/h2&gt;
-&lt;p&gt;docs.rs needs to store the built documentation on the filesystem before
-uploading it to the database, and it does so in the
-&lt;code&gt;/opt/docs-rs-prefix/documentations&lt;/code&gt; directory. docs.rs never cleared that
-directory though, so over time it started to increase its size until it caused
-this outage. Code to periodically purge temporary directories was present, but
-it was never configured to purge the one which caused the outage.&lt;/p&gt;
-&lt;h2&gt;&lt;a href=&quot;#resolution&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;resolution&quot;&gt;&lt;/a&gt;Resolution&lt;/h2&gt;
-&lt;p&gt;As the directory doesn’t contain any persistent data we cleared it and the web
-server was restarted. Once we were confident the situation was resolved all the
-crates that failed due to the outage were queued for a rebuild.&lt;/p&gt;
-&lt;h2&gt;&lt;a href=&quot;#postmortem&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;postmortem&quot;&gt;&lt;/a&gt;Postmortem&lt;/h2&gt;
-&lt;p&gt;The increased disk usage was gradual over weeks, slowly reaching 100% and
-causing the outage. While monitoring systems were in place and recorded graphs
-of the increase, no alert was configured so nobody noticed the problem. We need
-to add alerts when disk usage reaches 90%, so the problem can be investigated
-and dealt with on time.&lt;/p&gt;
-&lt;p&gt;Crates started to fail to build a day earlier, and close to no builds were
-successfully completed since then. We need to setup alerts when most of the
-builds are failing: as we don’t have the necessary metrics at the moment to
-reliably alert we'll have to add extra instrumentation as well.&lt;/p&gt;
-&lt;p&gt;Our response was slower due to issues with our on-call rotation for the
-service. The primary contacts don’t have the level of access required to
-increase the disk space of the instance (the temporary fix that was
-investigated at first but discarded after the discovery nobody awake could do
-it), and the backup contacts don’t have any production access or expertise on
-docs.rs.&lt;/p&gt;
-&lt;h2&gt;&lt;a href=&quot;#timeline-of-events&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;timeline-of-events&quot;&gt;&lt;/a&gt;Timeline of events&lt;/h2&gt;
-&lt;p&gt;Unless otherwise noted all events happened on 2019-10-21, and all times are in
-UTC.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;2019-10-20 00:55: crate builds started failing due to the low disk space&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;01:38: alerts fired for the docs.rs website being down, &lt;a href=&quot;https://github.com/ashleygwilliams&quot;&gt;ashleygwilliams&lt;/a&gt;
-(backup contact) got paged&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;01:39: &lt;a href=&quot;https://github.com/QuietMisdreavus&quot;&gt;QuietMisdreavus&lt;/a&gt; joins into the operations channel&lt;/li&gt;
-&lt;li&gt;01:39: &lt;a href=&quot;https://github.com/QuietMisdreavus&quot;&gt;QuietMisdreavus&lt;/a&gt; found the reason for the outage (full root partition)&lt;/li&gt;
-&lt;li&gt;01:52: &lt;a href=&quot;https://github.com/ashleygwilliams&quot;&gt;ashleygwilliams&lt;/a&gt; proposed to increase disk space, nobody with
-permissions required to so was awake or available though&lt;/li&gt;
-&lt;li&gt;01:56: &lt;a href=&quot;https://github.com/ashleygwilliams&quot;&gt;ashleygwilliams&lt;/a&gt; contacts &lt;a href=&quot;https://github.com/Mark-Simulacrum&quot;&gt;Mark-Simulacrum&lt;/a&gt;, who has the access
-required to increase disk space&lt;/li&gt;
-&lt;li&gt;01:57: &lt;a href=&quot;https://github.com/QuietMisdreavus&quot;&gt;QuietMisdreavus&lt;/a&gt; found the directory taking up all the disk space&lt;/li&gt;
-&lt;li&gt;02:00: &lt;a href=&quot;https://github.com/QuietMisdreavus&quot;&gt;QuietMisdreavus&lt;/a&gt; removed the directory taking up all the disk space&lt;/li&gt;
-&lt;li&gt;02:03: &lt;a href=&quot;https://github.com/QuietMisdreavus&quot;&gt;QuietMisdreavus&lt;/a&gt; restarted the web server&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;02:06: CDN propagated the changes, docs.rs back online&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;02:06: &lt;a href=&quot;https://github.com/Mark-Simulacrum&quot;&gt;Mark-Simulacrum&lt;/a&gt; joins into the operations channel&lt;/li&gt;
-&lt;li&gt;08:19: &lt;a href=&quot;https://github.com/pietroalbini&quot;&gt;pietroalbini&lt;/a&gt; added builds failed during the outage back into the
-queue&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;19:27: builds of the crates failed during the outage finished&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;&lt;a href=&quot;#action-items&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;action-items&quot;&gt;&lt;/a&gt;Action items&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Update the docs.rs source code to cleanup the offending directory
-automatically.&lt;/li&gt;
-&lt;li&gt;Add alerts when the available disk space on a server is below 10%.&lt;/li&gt;
-&lt;li&gt;Add alerts when most of the builds are failing.&lt;/li&gt;
-&lt;li&gt;Revisit the on-call rotation to make sure everyone on it has the
-permissions to either react to the incidents or escalate.&lt;/li&gt;
-&lt;/ul&gt;
-</content>
-
-        <author>
-            <name>Pietro Albini</name>
         </author>
     </entry>
     
