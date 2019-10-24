@@ -2,19 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>The &quot;Inside Rust&quot; Blog</title>
+    <title>docs.rs outage postmortem | Inside Rust Blog</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="Empowering everyone to build reliable and efficient software.">
      <!-- Twitter card -->
  <meta name="twitter:card" content="summary">
  <meta name="twitter:site" content="@rustlang">
  <meta name="twitter:creator" content="@rustlang">
- <meta name="twitter:title" content="The &quot;Inside Rust&quot; Blog">
+ <meta name="twitter:title" content="docs.rs outage postmortem | Inside Rust Blog">
  <meta name="twitter:description" content="Want to follow along with Rust development? Curious how you might get involved? Take a look!">
 <meta name="twitter:image" content="https://www.rust-lang.org/static/images/rust-social.jpg">
 
 <!-- Facebook OpenGraph -->
-<meta property="og:title" content="The &quot;Inside Rust&quot; Blog" />
+<meta property="og:title" content="docs.rs outage postmortem | Inside Rust Blog" />
 <meta property="og:description" content="Want to follow along with Rust development? Curious how you might get involved? Take a look!">
 <meta property="og:image" content="https://www.rust-lang.org/static/images/rust-social-wide.jpg" />
 <meta property="og:type" content="website" />
@@ -68,106 +68,81 @@
   </ul>
 </nav>
 
-<header class="mt3 mt0-ns mb4-ns">
-  <div class="container flex flex-column flex-row-l justify-between-l">
-    <div class="mw6-l">
-      <p>This is the <b>"Inside Rust"</b> blog. This blog is aimed at those who wish to follow along with Rust development. The various <a href="https://www.rust-lang.org/governance">Rust teams and working groups</a> use this blog to post status updates, calls for help, and other similar announcements.</p>
+<section id="docs.rs outage postmortem" class="white">
+  <div class="w-100 mw-none ph3 mw8-m mw8-l center f3">
+    <header>
+      <h2>docs.rs outage postmortem</h2>
+      <div class="highlight"></div>
+    </header>
+
+    <div class="publish-date-author">Oct. 21, 2019 &middot; Pietro Albini
+     on behalf of <a href="https://www.rust-lang.org/governance/teams/operations#infra">the infrastructure team</a> 
     </div>
-  </div>    
-  <div class="container flex flex-column flex-row-l justify-between-l">
-    <div class="mw8-l">
-      <p>
-      <b>See also:</b>
-      
-              <a href="/index.html">the main Rust blog</a>
-      
-      </p>
+
+    <div class="post">
+      <p>At 2019-10-21 01:38 UTC the docs.rs website went down because no available disk
+space was left on the server hosting the application. Crate builds were failing
+since 2019-10-20 00:55 UTC due to the same reason.</p>
+<h2><a href="#root-cause-of-the-outage" aria-hidden="true" class="anchor" id="root-cause-of-the-outage"></a>Root cause of the outage</h2>
+<p>docs.rs needs to store the built documentation on the filesystem before
+uploading it to the database, and it does so in the
+<code>/opt/docs-rs-prefix/documentations</code> directory. docs.rs never cleared that
+directory though, so over time it started to increase its size until it caused
+this outage. Code to periodically purge temporary directories was present, but
+it was never configured to purge the one which caused the outage.</p>
+<h2><a href="#resolution" aria-hidden="true" class="anchor" id="resolution"></a>Resolution</h2>
+<p>As the directory doesn’t contain any persistent data we cleared it and the web
+server was restarted. Once we were confident the situation was resolved all the
+crates that failed due to the outage were queued for a rebuild.</p>
+<h2><a href="#postmortem" aria-hidden="true" class="anchor" id="postmortem"></a>Postmortem</h2>
+<p>The increased disk usage was gradual over weeks, slowly reaching 100% and
+causing the outage. While monitoring systems were in place and recorded graphs
+of the increase, no alert was configured so nobody noticed the problem. We need
+to add alerts when disk usage reaches 90%, so the problem can be investigated
+and dealt with on time.</p>
+<p>Crates started to fail to build a day earlier, and close to no builds were
+successfully completed since then. We need to setup alerts when most of the
+builds are failing: as we don’t have the necessary metrics at the moment to
+reliably alert we'll have to add extra instrumentation as well.</p>
+<p>Our response was slower due to issues with our on-call rotation for the
+service. The primary contacts don’t have the level of access required to
+increase the disk space of the instance (the temporary fix that was
+investigated at first but discarded after the discovery nobody awake could do
+it), and the backup contacts don’t have any production access or expertise on
+docs.rs.</p>
+<h2><a href="#timeline-of-events" aria-hidden="true" class="anchor" id="timeline-of-events"></a>Timeline of events</h2>
+<p>Unless otherwise noted all events happened on 2019-10-21, and all times are in
+UTC.</p>
+<ul>
+<li><strong>2019-10-20 00:55: crate builds started failing due to the low disk space</strong></li>
+<li><strong>01:38: alerts fired for the docs.rs website being down, <a href="https://github.com/ashleygwilliams">ashleygwilliams</a>
+(backup contact) got paged</strong></li>
+<li>01:39: <a href="https://github.com/QuietMisdreavus">QuietMisdreavus</a> joins into the operations channel</li>
+<li>01:39: <a href="https://github.com/QuietMisdreavus">QuietMisdreavus</a> found the reason for the outage (full root partition)</li>
+<li>01:52: <a href="https://github.com/ashleygwilliams">ashleygwilliams</a> proposed to increase disk space, nobody with
+permissions required to so was awake or available though</li>
+<li>01:56: <a href="https://github.com/ashleygwilliams">ashleygwilliams</a> contacts <a href="https://github.com/Mark-Simulacrum">Mark-Simulacrum</a>, who has the access
+required to increase disk space</li>
+<li>01:57: <a href="https://github.com/QuietMisdreavus">QuietMisdreavus</a> found the directory taking up all the disk space</li>
+<li>02:00: <a href="https://github.com/QuietMisdreavus">QuietMisdreavus</a> removed the directory taking up all the disk space</li>
+<li>02:03: <a href="https://github.com/QuietMisdreavus">QuietMisdreavus</a> restarted the web server</li>
+<li><strong>02:06: CDN propagated the changes, docs.rs back online</strong></li>
+<li>02:06: <a href="https://github.com/Mark-Simulacrum">Mark-Simulacrum</a> joins into the operations channel</li>
+<li>08:19: <a href="https://github.com/pietroalbini">pietroalbini</a> added builds failed during the outage back into the
+queue</li>
+<li><strong>19:27: builds of the crates failed during the outage finished</strong></li>
+</ul>
+<h2><a href="#action-items" aria-hidden="true" class="anchor" id="action-items"></a>Action items</h2>
+<ul>
+<li>Update the docs.rs source code to cleanup the offending directory
+automatically.</li>
+<li>Add alerts when the available disk space on a server is below 10%.</li>
+<li>Add alerts when most of the builds are failing.</li>
+<li>Revisit the on-call rotation to make sure everyone on it has the
+permissions to either react to the incidents or escalate.</li>
+</ul>
+
     </div>
-  </div>
-</header>
-
-<section id="posts" class="purple">
-   <div class="w-100 mw-none ph3 mw8-m mw9-l center f3">
-
-    <table class="post-list collapse w-100 f2-l f2-m f3-s">
-    
-      <tr>
-        <td class="bn"></td>
-        <td class="bn"><h3 class="f0-l f1-m f2-s mt4 mb0">Posts in 2019</h3></td>
-      </tr>
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;22</td>
-        <td class="bn"><a href="/inside-rust/2019/10/22/infra-team-meeting.html">2019-10-22 Infrastructure Team Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;22</td>
-        <td class="bn"><a href="/inside-rust/2019/10/22/LLVM-ICE-breakers.html">Announcing the LLVM ICE-breaker group</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;21</td>
-        <td class="bn"><a href="/inside-rust/2019/10/21/docsrs-outage-postmortem.html">docs.rs outage postmortem</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;21</td>
-        <td class="bn"><a href="/inside-rust/2019/10/21/compiler-team-meeting.html">2019-10-17 Compiler Team Triage Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;17</td>
-        <td class="bn"><a href="/inside-rust/2019/10/17/ecstatic-morse-for-compiler-contributors.html">Please welcome ecstatic-morse to compiler-contributors</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;15</td>
-        <td class="bn"><a href="/inside-rust/2019/10/15/infra-team-meeting.html">2019-10-10 Infrastructure Team Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;15</td>
-        <td class="bn"><a href="/inside-rust/2019/10/15/compiler-team-meeting.html">2019-10-10 Compiler Team Triage Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;11</td>
-        <td class="bn"><a href="/inside-rust/2019/10/11/Lang-Team-Meeting.html">2019-10-10 Lang Team Triage Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;11</td>
-        <td class="bn"><a href="/inside-rust/2019/10/11/AsyncAwait-Not-Send-Error-Improvements.html">Improving async-await's &quot;Future is not Send&quot; diagnostic</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;07</td>
-        <td class="bn"><a href="/inside-rust/2019/10/07/AsyncAwait-WG-Focus-Issues.html">Async Foundations Update: Time for polish!</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;03</td>
-        <td class="bn"><a href="/inside-rust/2019/10/03/Keeping-secure-with-cargo-audit-0.9.html">Keeping Rust projects secure with cargo-audit 0.9: dependency trees, core advisories, unmaintained crates</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Sept.&nbsp;25</td>
-        <td class="bn"><a href="/inside-rust/2019/09/25/Welcome.html">Welcome to the Inside Rust blog!</a></td>
-      </tr>
-    
-    </table>
-
   </div>
 </section>
 
