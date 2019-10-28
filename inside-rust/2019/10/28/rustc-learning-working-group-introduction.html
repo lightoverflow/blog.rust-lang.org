@@ -2,19 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>The &quot;Inside Rust&quot; Blog</title>
+    <title>The Rustc Learning Working Group - An Introduction | Inside Rust Blog</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="Empowering everyone to build reliable and efficient software.">
      <!-- Twitter card -->
  <meta name="twitter:card" content="summary">
  <meta name="twitter:site" content="@rustlang">
  <meta name="twitter:creator" content="@rustlang">
- <meta name="twitter:title" content="The &quot;Inside Rust&quot; Blog">
+ <meta name="twitter:title" content="The Rustc Learning Working Group - An Introduction | Inside Rust Blog">
  <meta name="twitter:description" content="Want to follow along with Rust development? Curious how you might get involved? Take a look!">
 <meta name="twitter:image" content="https://www.rust-lang.org/static/images/rust-social.jpg">
 
 <!-- Facebook OpenGraph -->
-<meta property="og:title" content="The &quot;Inside Rust&quot; Blog" />
+<meta property="og:title" content="The Rustc Learning Working Group - An Introduction | Inside Rust Blog" />
 <meta property="og:description" content="Want to follow along with Rust development? Curious how you might get involved? Take a look!">
 <meta property="og:image" content="https://www.rust-lang.org/static/images/rust-social-wide.jpg" />
 <meta property="og:type" content="website" />
@@ -68,124 +68,81 @@
   </ul>
 </nav>
 
-<header class="mt3 mt0-ns mb4-ns">
-  <div class="container flex flex-column flex-row-l justify-between-l">
-    <div class="mw6-l">
-      <p>This is the <b>"Inside Rust"</b> blog. This blog is aimed at those who wish to follow along with Rust development. The various <a href="https://www.rust-lang.org/governance">Rust teams and working groups</a> use this blog to post status updates, calls for help, and other similar announcements.</p>
+<section id="The Rustc Learning Working Group - An Introduction" class="white">
+  <div class="w-100 mw-none ph3 mw8-m mw8-l center f3">
+    <header>
+      <h2>The Rustc Learning Working Group - An Introduction</h2>
+      <div class="highlight"></div>
+    </header>
+
+    <div class="publish-date-author">Oct. 28, 2019 &middot; Amanjeev Sethi
+     on behalf of <a href="https://www.rust-lang.org/governance/teams/compiler#wg-learning">the rustc learning working group</a> 
     </div>
-  </div>    
-  <div class="container flex flex-column flex-row-l justify-between-l">
-    <div class="mw8-l">
-      <p>
-      <b>See also:</b>
-      
-              <a href="/index.html">the main Rust blog</a>
-      
-      </p>
+
+    <div class="post">
+      <p>The <a href="https://github.com/rust-lang/compiler-team/tree/master/content/working-groups/learning">Learning Working Group</a>, formed in April 2019, is focused on making the
+compiler easier to learn by ensuring that <a href="https://rust-lang.github.io/rustc-guide/">rustc-guide</a> and API docs are
+&quot;complete&quot;. It is one of the many efforts by the Rust Compiler team to
+decrease the barrier of contributing to the compiler. As noted on the WG’s
+homepage —</p>
+<p><em>This working group aims to accomplish the following:</em></p>
+<ul>
+<li><em>Ensure that major components of rustc are covered in rustc-guide</em></li>
+<li><em>Ensure that API doc coverage is at least 90%</em></li>
+</ul>
+<p>The Learning Group is making entry to contribute easier by improving the
+compiler documentation for the new and potential contributors. We all know
+this bias — the more time we’ve spent in a system, the less likely we are to
+see the issues that the newcomers might face. Given that, this group
+organically became an attractive place for beginners, who would benefit
+from documenting the compiler internals, while learning those parts of it
+at the same time. This benefits the entire compiler team by giving the
+documentation a perspective from the new contributors.</p>
+<p>The Learning group, in general, is starting to document the
+“Compiler lecture series”, which are a list of Youtube video lectures
+given earlier by the more knowledgeable members of the compiler team.
+There is also the task of improving the documentation structure of
+<a href="https://rust-lang.github.io/rustc-guide/">rustc-guide</a>. At first, each member used to pick a video lecture by
+themselves and contribute via a Github pull request to the
+<a href="https://github.com/rust-lang/rustc-guide">rustc-guide Github repository</a>. This proved to be a bit difficult
+for the following reasons —</p>
+<ol>
+<li>Not all members would get to watch and work on the lectures of
+their choice.</li>
+<li>The knowledge would still be fragmented depending on who watched
+which lecture.</li>
+<li>Some lectures are more interesting than others and this means that
+some contributors would miss out on the interesting ones.</li>
+<li>Certain lectures are more difficult and require input from multiple
+people.</li>
+</ol>
+<p>Hence, at the moment, the group decided to work on one video at a time.
+This has proven to be beneficial for the entire group, especially with
+the lecture <a href="https://www.youtube.com/watch?v=c01TsOsr3-c">Representing types in rustc</a>. At the time of this writing,
+it is still a work-in-progress but the input from everyone allows people
+to work together while benefiting from the questions that everyone has
+about the lecture.</p>
+<p>The group is still learning about the best possible ways to organize and
+manage and some compiler team veterans are always there to help out!
+We are always in need of help from both existing compiler contributors
+and new folks who want to contribute and learn.</p>
+<h2><a href="#call-for-participation" aria-hidden="true" class="anchor" id="call-for-participation"></a>Call for participation</h2>
+<p>There is no bar to entry in the group. To join the group, you can
+drop a message in <a href="https://rust-lang.zulipchat.com/#narrow/stream/196385-t-compiler.2Fwg-learning"><code>#t-compiler/wg-learning</code> on Zulip</a> introducing
+yourself. We would love to hear from you and hope we all together
+can make the documentation better.</p>
+<h2><a href="#important--resources" aria-hidden="true" class="anchor" id="important--resources"></a>Important  resources</h2>
+<ul>
+<li><strong><a href="https://github.com/rust-lang/compiler-team/tree/master/content/working-groups/learning">Learning Working Group</a></strong></li>
+<li><strong><a href="https://rust-lang.github.io/rustc-guide/">Rustc Guide Book</a></strong></li>
+<li><strong><a href="https://github.com/rust-lang/rustc-guide">Rustc Guide Repository</a></strong></li>
+<li><strong><a href="https://github.com/rust-lang/rustc-guide/projects/2">Github Project (Kanban)</a></strong></li>
+<li><strong><a href="https://github.com/rust-lang/compiler-team/tree/master/content/working-groups/learning/minutes">Learning WG Meeting Minutes</a></strong></li>
+<li><strong><a href="https://www.youtube.com/channel/UCaYhcUwRBNscFNUKTjgPFiA/playlists">Rust Youtube Videos</a></strong></li>
+<li><strong><a href="https://rust-lang.zulipchat.com/#narrow/stream/196385-t-compiler.2Fwg-learning">Zulip Stream: <code>#t-compiler/wg-learning</code> on Zulip</a></strong></li>
+</ul>
+
     </div>
-  </div>
-</header>
-
-<section id="posts" class="purple">
-   <div class="w-100 mw-none ph3 mw8-m mw9-l center f3">
-
-    <table class="post-list collapse w-100 f2-l f2-m f3-s">
-    
-      <tr>
-        <td class="bn"></td>
-        <td class="bn"><h3 class="f0-l f1-m f2-s mt4 mb0">Posts in 2019</h3></td>
-      </tr>
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;28</td>
-        <td class="bn"><a href="/inside-rust/2019/10/28/rustc-learning-working-group-introduction.html">The Rustc Learning Working Group - An Introduction</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;25</td>
-        <td class="bn"><a href="/inside-rust/2019/10/25/planning-meeting-update.html">Planning meeting update</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;24</td>
-        <td class="bn"><a href="/inside-rust/2019/10/24/pnkfelix-compiler-team-co-lead.html">Please welcome pnkfelix as compiler team co-lead!</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;24</td>
-        <td class="bn"><a href="/inside-rust/2019/10/24/docsrs-outage-postmortem.html">docs.rs outage postmortem</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;22</td>
-        <td class="bn"><a href="/inside-rust/2019/10/22/infra-team-meeting.html">2019-10-22 Infrastructure Team Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;22</td>
-        <td class="bn"><a href="/inside-rust/2019/10/22/LLVM-ICE-breakers.html">Announcing the LLVM ICE-breaker group</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;21</td>
-        <td class="bn"><a href="/inside-rust/2019/10/21/compiler-team-meeting.html">2019-10-17 Compiler Team Triage Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;17</td>
-        <td class="bn"><a href="/inside-rust/2019/10/17/ecstatic-morse-for-compiler-contributors.html">Please welcome ecstatic-morse to compiler-contributors</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;15</td>
-        <td class="bn"><a href="/inside-rust/2019/10/15/infra-team-meeting.html">2019-10-10 Infrastructure Team Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;15</td>
-        <td class="bn"><a href="/inside-rust/2019/10/15/compiler-team-meeting.html">2019-10-10 Compiler Team Triage Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;11</td>
-        <td class="bn"><a href="/inside-rust/2019/10/11/Lang-Team-Meeting.html">2019-10-10 Lang Team Triage Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;11</td>
-        <td class="bn"><a href="/inside-rust/2019/10/11/AsyncAwait-Not-Send-Error-Improvements.html">Improving async-await's &quot;Future is not Send&quot; diagnostic</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;07</td>
-        <td class="bn"><a href="/inside-rust/2019/10/07/AsyncAwait-WG-Focus-Issues.html">Async Foundations Update: Time for polish!</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;03</td>
-        <td class="bn"><a href="/inside-rust/2019/10/03/Keeping-secure-with-cargo-audit-0.9.html">Keeping Rust projects secure with cargo-audit 0.9: dependency trees, core advisories, unmaintained crates</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Sept.&nbsp;25</td>
-        <td class="bn"><a href="/inside-rust/2019/09/25/Welcome.html">Welcome to the Inside Rust blog!</a></td>
-      </tr>
-    
-    </table>
-
   </div>
 </section>
 

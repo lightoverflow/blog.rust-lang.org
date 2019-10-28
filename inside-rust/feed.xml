@@ -10,8 +10,82 @@
         <name>Maintained by the Rust Teams.</name>
         <uri>https://github.com/rust-lang/blog.rust-lang.org/</uri>
     </author>
-    <updated>2019-10-25T16:55:38Z</updated>
+    <updated>2019-10-28T15:37:19Z</updated>
 
+    
+    <entry>
+        <title>The Rustc Learning Working Group - An Introduction</title>
+        <link rel="alternate" href="https://blog.rust-lang.org/inside-rust/2019/10/28/rustc-learning-working-group-introduction.html" type="text/html" title="The Rustc Learning Working Group - An Introduction" />
+        <published>2019-10-28T00:00:00Z</published>
+        <updated>2019-10-28T00:00:00Z</updated>
+        <id>https://blog.rust-lang.org/inside-rust/2019/10/28/rustc-learning-working-group-introduction.html</id>
+        <content type="html" xml:base="https://blog.rust-lang.org/inside-rust/2019/10/28/rustc-learning-working-group-introduction.html">&lt;p&gt;The &lt;a href=&quot;https://github.com/rust-lang/compiler-team/tree/master/content/working-groups/learning&quot;&gt;Learning Working Group&lt;/a&gt;, formed in April 2019, is focused on making the
+compiler easier to learn by ensuring that &lt;a href=&quot;https://rust-lang.github.io/rustc-guide/&quot;&gt;rustc-guide&lt;/a&gt; and API docs are
+&amp;quot;complete&amp;quot;. It is one of the many efforts by the Rust Compiler team to
+decrease the barrier of contributing to the compiler. As noted on the WG’s
+homepage —&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;This working group aims to accomplish the following:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Ensure that major components of rustc are covered in rustc-guide&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Ensure that API doc coverage is at least 90%&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The Learning Group is making entry to contribute easier by improving the
+compiler documentation for the new and potential contributors. We all know
+this bias — the more time we’ve spent in a system, the less likely we are to
+see the issues that the newcomers might face. Given that, this group
+organically became an attractive place for beginners, who would benefit
+from documenting the compiler internals, while learning those parts of it
+at the same time. This benefits the entire compiler team by giving the
+documentation a perspective from the new contributors.&lt;/p&gt;
+&lt;p&gt;The Learning group, in general, is starting to document the
+“Compiler lecture series”, which are a list of Youtube video lectures
+given earlier by the more knowledgeable members of the compiler team.
+There is also the task of improving the documentation structure of
+&lt;a href=&quot;https://rust-lang.github.io/rustc-guide/&quot;&gt;rustc-guide&lt;/a&gt;. At first, each member used to pick a video lecture by
+themselves and contribute via a Github pull request to the
+&lt;a href=&quot;https://github.com/rust-lang/rustc-guide&quot;&gt;rustc-guide Github repository&lt;/a&gt;. This proved to be a bit difficult
+for the following reasons —&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Not all members would get to watch and work on the lectures of
+their choice.&lt;/li&gt;
+&lt;li&gt;The knowledge would still be fragmented depending on who watched
+which lecture.&lt;/li&gt;
+&lt;li&gt;Some lectures are more interesting than others and this means that
+some contributors would miss out on the interesting ones.&lt;/li&gt;
+&lt;li&gt;Certain lectures are more difficult and require input from multiple
+people.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Hence, at the moment, the group decided to work on one video at a time.
+This has proven to be beneficial for the entire group, especially with
+the lecture &lt;a href=&quot;https://www.youtube.com/watch?v=c01TsOsr3-c&quot;&gt;Representing types in rustc&lt;/a&gt;. At the time of this writing,
+it is still a work-in-progress but the input from everyone allows people
+to work together while benefiting from the questions that everyone has
+about the lecture.&lt;/p&gt;
+&lt;p&gt;The group is still learning about the best possible ways to organize and
+manage and some compiler team veterans are always there to help out!
+We are always in need of help from both existing compiler contributors
+and new folks who want to contribute and learn.&lt;/p&gt;
+&lt;h2&gt;&lt;a href=&quot;#call-for-participation&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;call-for-participation&quot;&gt;&lt;/a&gt;Call for participation&lt;/h2&gt;
+&lt;p&gt;There is no bar to entry in the group. To join the group, you can
+drop a message in &lt;a href=&quot;https://rust-lang.zulipchat.com/#narrow/stream/196385-t-compiler.2Fwg-learning&quot;&gt;&lt;code&gt;#t-compiler/wg-learning&lt;/code&gt; on Zulip&lt;/a&gt; introducing
+yourself. We would love to hear from you and hope we all together
+can make the documentation better.&lt;/p&gt;
+&lt;h2&gt;&lt;a href=&quot;#important--resources&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;important--resources&quot;&gt;&lt;/a&gt;Important  resources&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/rust-lang/compiler-team/tree/master/content/working-groups/learning&quot;&gt;Learning Working Group&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://rust-lang.github.io/rustc-guide/&quot;&gt;Rustc Guide Book&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/rust-lang/rustc-guide&quot;&gt;Rustc Guide Repository&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/rust-lang/rustc-guide/projects/2&quot;&gt;Github Project (Kanban)&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/rust-lang/compiler-team/tree/master/content/working-groups/learning/minutes&quot;&gt;Learning WG Meeting Minutes&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://www.youtube.com/channel/UCaYhcUwRBNscFNUKTjgPFiA/playlists&quot;&gt;Rust Youtube Videos&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://rust-lang.zulipchat.com/#narrow/stream/196385-t-compiler.2Fwg-learning&quot;&gt;Zulip Stream: &lt;code&gt;#t-compiler/wg-learning&lt;/code&gt; on Zulip&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+
+        <author>
+            <name>Amanjeev Sethi</name>
+        </author>
+    </entry>
     
     <entry>
         <title>Planning meeting update</title>
@@ -424,62 +498,6 @@ Each week, we have general announcements from the team followed by check-ins fro
 
         <author>
             <name>Wesley Wiser</name>
-        </author>
-    </entry>
-    
-    <entry>
-        <title>2019-10-10 Lang Team Triage Meeting</title>
-        <link rel="alternate" href="https://blog.rust-lang.org/inside-rust/2019/10/11/Lang-Team-Meeting.html" type="text/html" title="2019-10-10 Lang Team Triage Meeting" />
-        <published>2019-10-11T00:00:00Z</published>
-        <updated>2019-10-11T00:00:00Z</updated>
-        <id>https://blog.rust-lang.org/inside-rust/2019/10/11/Lang-Team-Meeting.html</id>
-        <content type="html" xml:base="https://blog.rust-lang.org/inside-rust/2019/10/11/Lang-Team-Meeting.html">&lt;p&gt;We had our &lt;a href=&quot;https://github.com/rust-lang/lang-team/#meeting-calendara&quot;&gt;weekly triage meeting&lt;/a&gt; on 2019-10-10. You can find the
-&lt;a href=&quot;https://github.com/rust-lang/lang-team/blob/master/minutes/2019-10-10.md&quot;&gt;minutes&lt;/a&gt; on the &lt;a href=&quot;https://github.com/rust-lang/lang-team/&quot;&gt;lang-team&lt;/a&gt; repository; there is also a &lt;a href=&quot;https://youtu.be/QvE9-zce5_4&quot;&gt;video
-recording&lt;/a&gt; on YouTube. This week we had a number of folks who have
-been working on const evaluation in attendance, which gave us an
-opportunity to dive into some of the complexities involved there. We
-also discussed how to make the const evaluation effort into a
-&amp;quot;shepherded project&amp;quot;, a concept that we are still actively developing
-(see my blog post on &lt;a href=&quot;http://smallcultfollowing.com/babysteps/blog/2019/09/11/aic-shepherds-3-0/&quot;&gt;Shepherding 3.0&lt;/a&gt; for the general idea).&lt;/p&gt;
-&lt;h2&gt;&lt;a href=&quot;#other-updates-on-shepherded-items&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;other-updates-on-shepherded-items&quot;&gt;&lt;/a&gt;Other updates on shepherded items&lt;/h2&gt;
-&lt;p&gt;This is our current list of &amp;quot;shepherded items&amp;quot;, which are things we
-are tracking week to week. We're still evolving the shepherding
-system. Hopefully we'll soon have links for all of these to a good,
-representative place that explains the overall status and roadmap. All
-in good time.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/nikomatsakis/project-ffi-unwind&quot;&gt;unwind-ffi&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;created a &lt;a href=&quot;http://smallcultfollowing.com/babysteps/blog/2019/09/11/aic-shepherds-3-0/&quot;&gt;zulip&lt;/a&gt; stream (&lt;code&gt;#wg-ffi-unwind&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;preparing an RFC that creates the group official and lays out the roadmap&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&amp;quot;object safety&amp;quot; group (e.g., &lt;a href=&quot;http://smallcultfollowing.com/babysteps/blog/2019/09/11/aic-shepherds-3-0/&quot;&gt;#57893&lt;/a&gt;)
-&lt;ul&gt;
-&lt;li&gt;no major updates, still iterating on the &amp;quot;in progress&amp;quot; branch&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;re-rebalance coherence
-&lt;ul&gt;
-&lt;li&gt;we have a spreadsheet mapping out all the possible tests&lt;/li&gt;
-&lt;li&gt;we'll fill out the matrix, but probably ready to stabilize 🎉&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;stabilize proc-macros generating macro-rules items
-&lt;ul&gt;
-&lt;li&gt;waiting on a report from pnkfelix&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;grammar working group
-&lt;ul&gt;
-&lt;li&gt;no updates&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-</content>
-
-        <author>
-            <name>Niko Matsakis</name>
         </author>
     </entry>
     
