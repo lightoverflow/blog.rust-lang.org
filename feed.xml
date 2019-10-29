@@ -10,7 +10,7 @@
         <name>Maintained by the Rust Team.</name>
         <uri>https://github.com/rust-lang/blog.rust-lang.org/</uri>
     </author>
-    <updated>2019-10-29T15:33:10Z</updated>
+    <updated>2019-10-29T15:39:36Z</updated>
 
     
     <entry>
@@ -35,9 +35,11 @@
 &lt;h2&gt;&lt;a href=&quot;#what-were-looking-for&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;what-were-looking-for&quot;&gt;&lt;/a&gt;What we're looking for&lt;/h2&gt;
 &lt;p&gt;We are accepting ideas about almost anything having to do with Rust: language features, tooling needs, community programs, ecosystem needs... if it's related to Rust, we want to hear about it.&lt;/p&gt;
 &lt;p&gt;One big question for this year: will there be a Rust 2021 edition? If so, 2020 would be the year to do a lot of associated work and plan the details. What would the edition's theme be?&lt;/p&gt;
-&lt;p&gt;Rust 2015: Stability
-Rust 2018: Productivity
-Rust 2021: ?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Rust 2015: Stability&lt;/li&gt;
+&lt;li&gt;Rust 2018: Productivity&lt;/li&gt;
+&lt;li&gt;Rust 2021: ?&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;Let us know what you think!&lt;/p&gt;
 &lt;h2&gt;&lt;a href=&quot;#please-share-these-posts-with-us&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;please-share-these-posts-with-us&quot;&gt;&lt;/a&gt;Please share these posts with us&lt;/h2&gt;
 &lt;p&gt;You can write up these posts and email them to community@rust-lang.org or tweet them with the hashtag #rust2020. If you'd prefer to not participate publicly, emailing something to community@rust-lang.org is fine as well.&lt;/p&gt;
