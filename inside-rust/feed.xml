@@ -10,8 +10,63 @@
         <name>Maintained by the Rust Teams.</name>
         <uri>https://github.com/rust-lang/blog.rust-lang.org/</uri>
     </author>
-    <updated>2019-10-30T09:18:40Z</updated>
+    <updated>2019-10-30T15:44:08Z</updated>
 
+    
+    <entry>
+        <title>2019-10-24 Compiler Team Triage Meeting</title>
+        <link rel="alternate" href="https://blog.rust-lang.org/inside-rust/2019/10/30/compiler-team-meeting.html" type="text/html" title="2019-10-24 Compiler Team Triage Meeting" />
+        <published>2019-10-30T00:00:00Z</published>
+        <updated>2019-10-30T00:00:00Z</updated>
+        <id>https://blog.rust-lang.org/inside-rust/2019/10/30/compiler-team-meeting.html</id>
+        <content type="html" xml:base="https://blog.rust-lang.org/inside-rust/2019/10/30/compiler-team-meeting.html">&lt;p&gt;The compiler team had our weekly triage meeting on 2019-10-24.
+You can find the &lt;a href=&quot;https://rust-lang.github.io/compiler-team/minutes/triage-meeting/2019-10-24/&quot;&gt;minutes&lt;/a&gt; on the &lt;a href=&quot;https://github.com/rust-lang/compiler-team&quot;&gt;compiler-team&lt;/a&gt; repository.
+Each week, we have general announcements from the team followed by check-ins from two fo the compiler team working groups.&lt;/p&gt;
+&lt;h2&gt;&lt;a href=&quot;#announcments&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;announcments&quot;&gt;&lt;/a&gt;Announcments&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/Mark-Simulacrum&quot;&gt;@simulacrum&lt;/a&gt; landed the rust-std split PR which decreases the size of the rustc-dev rustup component &lt;a href=&quot;https://github.com/rust-lang/rust/pull/65474&quot;&gt;#65474&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;&lt;a href=&quot;#working-group-sync&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;working-group-sync&quot;&gt;&lt;/a&gt;Working group sync&lt;/h2&gt;
+&lt;h3&gt;&lt;a href=&quot;#wg-nll&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;wg-nll&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://rust-lang.github.io/compiler-team/working-groups/nll/&quot;&gt;wg-nll&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Rust 1.40 (current nightly) will be the first stable release without the HIR borrow checker.
+This means Non Lexical Lifetimes will be available on Rust 2015.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;At this point, wg-nll has completed its purpose and will be disbanded.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;wg-polonius is still going strong though!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&quot;https://rust-lang.zulipchat.com/#narrow/stream/131828-t-compiler/topic/weekly.20meeting.202019-10-24.20.2354818/near/178960111&quot;&gt;Link to full discussion&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;a href=&quot;#wg-parallel-rustc&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;wg-parallel-rustc&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://rust-lang.github.io/compiler-team/working-groups/parallel-rustc/&quot;&gt;wg-parallel-rustc&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Work is proceeding slowly but steadily.
+There are regular triage meetings every Monday on the compiler calendar.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The current goal is to refactor/audit compiler locks and other parts of the parallel query system and to investigate improving performance.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The current MVP is to do high-level parallelization in a few critical places such as typechecking &amp;amp; linting.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Currently, we're not seeing the speedups we want from parallelization but work is ongoing to remove locking and improve the jobserver integration.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://youtu.be/lVjW0Nw8N_g&quot;&gt;Video recording of last meeting&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&quot;https://rust-lang.zulipchat.com/#narrow/stream/131828-t-compiler/topic/weekly.20meeting.202019-10-24.20.2354818/near/178960379&quot;&gt;Link to full discussion&lt;/a&gt;&lt;/p&gt;
+</content>
+
+        <author>
+            <name>Wesley Wiser</name>
+        </author>
+    </entry>
     
     <entry>
         <title>2019-10-29 Infrastructure Team Meeting</title>
@@ -458,41 +513,6 @@ to validate the bodies of &lt;code&gt;const&lt;/code&gt;s and &lt;code&gt;const 
 
         <author>
             <name>Niko Matsakis</name>
-        </author>
-    </entry>
-    
-    <entry>
-        <title>2019-10-10 Infrastructure Team Meeting</title>
-        <link rel="alternate" href="https://blog.rust-lang.org/inside-rust/2019/10/15/infra-team-meeting.html" type="text/html" title="2019-10-10 Infrastructure Team Meeting" />
-        <published>2019-10-15T00:00:00Z</published>
-        <updated>2019-10-15T00:00:00Z</updated>
-        <id>https://blog.rust-lang.org/inside-rust/2019/10/15/infra-team-meeting.html</id>
-        <content type="html" xml:base="https://blog.rust-lang.org/inside-rust/2019/10/15/infra-team-meeting.html">&lt;p&gt;Meeting run by kennytm. Minutes written by pietroalbini.&lt;br /&gt;
-Attending: alexcrichton, kennytm, Mark-Simulacrum, pietroalbini, sgrif,
-shepmaster&lt;br /&gt;
-&lt;a href=&quot;https://discordapp.com/channels/442252698964721669/443148319431065610/633710764762464285&quot;&gt;Start of the conversation&lt;/a&gt;&lt;/p&gt;
-&lt;h2&gt;&lt;a href=&quot;#publishing-the-meeting-minutes-pietroalbini)&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;publishing-the-meeting-minutes-pietroalbini)&quot;&gt;&lt;/a&gt;Publishing the meeting minutes (pietroalbini)&lt;/h2&gt;
-&lt;p&gt;The infrastructure team recently started keeping minutes of the meetings (these
-ones!), recording everything we decided and what the rationale of the decision
-was. The original minutes are stored in a private Paper document, as they also
-contain minutes of the private parts of the meetings.&lt;/p&gt;
-&lt;p&gt;pietroalbini proposed to store a public version of the minutes (with the
-private parts removed) on the
-&lt;a href=&quot;https://github.com/rust-lang/infra-team&quot;&gt;infra-team&lt;/a&gt; repository, and to
-cross-post them on the &lt;a href=&quot;https://blog.rust-lang.org/inside-rust&quot;&gt;“Inside Rust”&lt;/a&gt;
-blog. The rest of the team agreed on this. pietroalbini also volunteered to
-make the work of writing the minutes and publishing them.&lt;/p&gt;
-&lt;h2&gt;&lt;a href=&quot;#binary-signing-and-the-signpath-offer-pietroalbini)&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;binary-signing-and-the-signpath-offer-pietroalbini)&quot;&gt;&lt;/a&gt;Binary signing and the SignPath offer (pietroalbini)&lt;/h2&gt;
-&lt;p&gt;A few weeks ago the team received an email from SignPath offering code signing
-certificates and infrastructure to the Rust project. The main concern team
-members had was the lack of time to implement the changes on our end, as
-everyone is busy with other tasks. Everyone agreed to revisit the topic and
-their offer once someone inside the team has time to drive the implementation
-effort.&lt;/p&gt;
-</content>
-
-        <author>
-            <name>Pietro Albini</name>
         </author>
     </entry>
     
