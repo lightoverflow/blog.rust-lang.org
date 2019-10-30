@@ -2,19 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>The &quot;Inside Rust&quot; Blog</title>
+    <title>2019-10-29 Infrastructure Team Meeting | Inside Rust Blog</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="Empowering everyone to build reliable and efficient software.">
      <!-- Twitter card -->
  <meta name="twitter:card" content="summary">
  <meta name="twitter:site" content="@rustlang">
  <meta name="twitter:creator" content="@rustlang">
- <meta name="twitter:title" content="The &quot;Inside Rust&quot; Blog">
+ <meta name="twitter:title" content="2019-10-29 Infrastructure Team Meeting | Inside Rust Blog">
  <meta name="twitter:description" content="Want to follow along with Rust development? Curious how you might get involved? Take a look!">
 <meta name="twitter:image" content="https://www.rust-lang.org/static/images/rust-social.jpg">
 
 <!-- Facebook OpenGraph -->
-<meta property="og:title" content="The &quot;Inside Rust&quot; Blog" />
+<meta property="og:title" content="2019-10-29 Infrastructure Team Meeting | Inside Rust Blog" />
 <meta property="og:description" content="Want to follow along with Rust development? Curious how you might get involved? Take a look!">
 <meta property="og:image" content="https://www.rust-lang.org/static/images/rust-social-wide.jpg" />
 <meta property="og:type" content="website" />
@@ -68,130 +68,69 @@
   </ul>
 </nav>
 
-<header class="mt3 mt0-ns mb4-ns">
-  <div class="container flex flex-column flex-row-l justify-between-l">
-    <div class="mw6-l">
-      <p>This is the <b>"Inside Rust"</b> blog. This blog is aimed at those who wish to follow along with Rust development. The various <a href="https://www.rust-lang.org/governance">Rust teams and working groups</a> use this blog to post status updates, calls for help, and other similar announcements.</p>
+<section id="2019-10-29 Infrastructure Team Meeting" class="white">
+  <div class="w-100 mw-none ph3 mw8-m mw8-l center f3">
+    <header>
+      <h2>2019-10-29 Infrastructure Team Meeting</h2>
+      <div class="highlight"></div>
+    </header>
+
+    <div class="publish-date-author">Oct. 29, 2019 &middot; Pietro Albini
+     on behalf of <a href="https://www.rust-lang.org/governance/teams/operations#infra">the infrastructure team</a> 
     </div>
-  </div>    
-  <div class="container flex flex-column flex-row-l justify-between-l">
-    <div class="mw8-l">
-      <p>
-      <b>See also:</b>
-      
-              <a href="/index.html">the main Rust blog</a>
-      
-      </p>
+
+    <div class="post">
+      <p>Meeting run by Mark-Simulacrum. Minutes written by pietroalbini.<br />
+Attending: alexcrichton, kennytm, Mark-Simulacrum, pietroalbini, shepmaster<br />
+<a href="https://discordapp.com/channels/442252698964721669/443148319431065610/638784152014946321">Start of the conversation</a></p>
+<h2><a href="#news-from-the-team" aria-hidden="true" class="anchor" id="news-from-the-team"></a>News from the team</h2>
+<ul>
+<li>
+<p>A big PR moving most of the CI build environment preparation to standalone
+scripts finally landed! This will allow multiple other CI improvements down
+the line!</p>
+</li>
+<li>
+<p>A crates.io staging environment behind CloudFront has been configured on
+<a href="https://staging.cratesio.com">staging.cratesio.com</a>, testing the
+configuration before deploying it on the main domain. Please note the staging
+server is on a temporary domain and will be moved in the near future.</p>
+</li>
+</ul>
+<h2><a href="#rolling-back-the-msys2-hack-p-high-issue)" aria-hidden="true" class="anchor" id="rolling-back-the-msys2-hack-p-high-issue)"></a>Rolling back the msys2 hack (P-high issue)</h2>
+<p>Last week there was an issue in our CI caused by a broken <code>ca-certificates</code>
+msys2 package, that caused all the windows builders to fail. To patch the
+problem an older version of that package was vendored and CI was configured to
+download it instead of the broken one. Now that upstream fixed the issue,
+pietroalbini will prepare PRs targeting both master and beta rolling back the
+temporary patch.</p>
+<h2><a href="#what-to-do-with-mirroring-msys2mingw?" aria-hidden="true" class="anchor" id="what-to-do-with-mirroring-msys2mingw?"></a>What to do with mirroring msys2/mingw?</h2>
+<p>The CI issue mentioned in the previous topic started thoughts about vendoring
+msys2 and MinGW as a whole, to prevent such issues from happening in the
+future. msys2 is a weird program to package as it’s more of a Linux-like
+distribution on Windows, with its own package manager based on tooling borrowed
+from Arch Linux.</p>
+<p>Creating the initial mirrors is not trivial but doable, but the concern is how
+to keep them updated, because for example an outdated OpenSSL is really bad.
+mati865 suggested that other projects often tar the whole msys2 installation
+directory and periodically update that, and we’ll explore that. More discussion
+on the approach will likely happen on the PR implementing the changes.</p>
+<h2><a href="#restricted-aws-access-for-docsrs-operators" aria-hidden="true" class="anchor" id="restricted-aws-access-for-docsrs-operators"></a>Restricted AWS access for docs.rs operators</h2>
+<p>One of the issues exposed in the <a href="https://blog.rust-lang.org/inside-rust/2019/10/24/docsrs-outage-postmortem.html">docs.rs outage postmortem</a> was that
+the people in the docs.rs on-call rotation did not have access to the AWS
+resources part of docs.rs. pietroalbini proposed to give them limited access,
+namely to stop/start the EC2 instance and to inspect/change the underlying S3
+storage bucket. Mark-Simulacrum thought the access was not needed in practice,
+and we agreed to revisit the topic if issues arise again.</p>
+<h2><a href="#new-server-for-perf" aria-hidden="true" class="anchor" id="new-server-for-perf"></a>New server for perf</h2>
+<p>To ensure consistent results the collector for <a href="https://perf.rust-lang.org">perf.rust-lang.org</a> needs to be
+on bare metal hardware, and until now it was a server lying under
+alexcrichton’s desk. The server will have to be moved by December though, and
+alexcrichton asked the team on feedback on what to do. There was consensus that
+the best solution is to look for a rented bare metal server, and pietroalbini
+will do an initial investigation.</p>
+
     </div>
-  </div>
-</header>
-
-<section id="posts" class="purple">
-   <div class="w-100 mw-none ph3 mw8-m mw9-l center f3">
-
-    <table class="post-list collapse w-100 f2-l f2-m f3-s">
-    
-      <tr>
-        <td class="bn"></td>
-        <td class="bn"><h3 class="f0-l f1-m f2-s mt4 mb0">Posts in 2019</h3></td>
-      </tr>
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;29</td>
-        <td class="bn"><a href="/inside-rust/2019/10/29/infra-team-meeting.html">2019-10-29 Infrastructure Team Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;28</td>
-        <td class="bn"><a href="/inside-rust/2019/10/28/rustc-learning-working-group-introduction.html">The Rustc Learning Working Group - An Introduction</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;25</td>
-        <td class="bn"><a href="/inside-rust/2019/10/25/planning-meeting-update.html">Planning meeting update</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;24</td>
-        <td class="bn"><a href="/inside-rust/2019/10/24/pnkfelix-compiler-team-co-lead.html">Please welcome pnkfelix as compiler team co-lead!</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;24</td>
-        <td class="bn"><a href="/inside-rust/2019/10/24/docsrs-outage-postmortem.html">docs.rs outage postmortem</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;22</td>
-        <td class="bn"><a href="/inside-rust/2019/10/22/infra-team-meeting.html">2019-10-22 Infrastructure Team Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;22</td>
-        <td class="bn"><a href="/inside-rust/2019/10/22/LLVM-ICE-breakers.html">Announcing the LLVM ICE-breaker group</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;21</td>
-        <td class="bn"><a href="/inside-rust/2019/10/21/compiler-team-meeting.html">2019-10-17 Compiler Team Triage Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;17</td>
-        <td class="bn"><a href="/inside-rust/2019/10/17/ecstatic-morse-for-compiler-contributors.html">Please welcome ecstatic-morse to compiler-contributors</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;15</td>
-        <td class="bn"><a href="/inside-rust/2019/10/15/infra-team-meeting.html">2019-10-10 Infrastructure Team Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;15</td>
-        <td class="bn"><a href="/inside-rust/2019/10/15/compiler-team-meeting.html">2019-10-10 Compiler Team Triage Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;11</td>
-        <td class="bn"><a href="/inside-rust/2019/10/11/Lang-Team-Meeting.html">2019-10-10 Lang Team Triage Meeting</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;11</td>
-        <td class="bn"><a href="/inside-rust/2019/10/11/AsyncAwait-Not-Send-Error-Improvements.html">Improving async-await's &quot;Future is not Send&quot; diagnostic</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;07</td>
-        <td class="bn"><a href="/inside-rust/2019/10/07/AsyncAwait-WG-Focus-Issues.html">Async Foundations Update: Time for polish!</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Oct.&nbsp;03</td>
-        <td class="bn"><a href="/inside-rust/2019/10/03/Keeping-secure-with-cargo-audit-0.9.html">Keeping Rust projects secure with cargo-audit 0.9: dependency trees, core advisories, unmaintained crates</a></td>
-      </tr>
-    
-      
-      <tr>
-        <td class="tr o-60 pr4 pr5-l bn">Sept.&nbsp;25</td>
-        <td class="bn"><a href="/inside-rust/2019/09/25/Welcome.html">Welcome to the Inside Rust blog!</a></td>
-      </tr>
-    
-    </table>
-
   </div>
 </section>
 
