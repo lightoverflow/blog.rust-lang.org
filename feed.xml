@@ -10,8 +10,96 @@
         <name>Maintained by the Rust Team.</name>
         <uri>https://github.com/rust-lang/blog.rust-lang.org/</uri>
     </author>
-    <updated>2019-10-30T15:44:08Z</updated>
+    <updated>2019-11-01T13:17:19Z</updated>
 
+    
+    <entry>
+        <title>Completing the transition to the new borrow checker</title>
+        <link rel="alternate" href="https://blog.rust-lang.org/2019/11/01/nll-hard-errors.html" type="text/html" title="Completing the transition to the new borrow checker" />
+        <published>2019-11-01T00:00:00Z</published>
+        <updated>2019-11-01T00:00:00Z</updated>
+        <id>https://blog.rust-lang.org/2019/11/01/nll-hard-errors.html</id>
+        <content type="html" xml:base="https://blog.rust-lang.org/2019/11/01/nll-hard-errors.html">&lt;p&gt;For most of 2018, we've been issuing warnings about various bugs in the
+borrow checker that we plan to fix -- about two months ago, in the
+current Rust nightly, those warnings became &lt;strong&gt;hard errors&lt;/strong&gt;. In about
+two weeks, when the nightly branches to become beta, those hard errors
+will be in the beta build, and they will eventually hit stable on
+December 19th, as part of Rust 1.40.0. &lt;strong&gt;If you're testing with
+Nightly, you should be all set -- but otherwise, you may want to go
+and check to make sure your code still builds. If not, we have advice
+for fixing common problems below.&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;a href=&quot;#background-the-non-lexical-lifetime-transition&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;background-the-non-lexical-lifetime-transition&quot;&gt;&lt;/a&gt;Background: the non-lexical lifetime transition&lt;/h3&gt;
+&lt;p&gt;When we &lt;a href=&quot;https://blog.rust-lang.org/2018/12/06/Rust-1.31-and-rust-2018.html&quot;&gt;released Rust 2018 in Rust 1.31&lt;/a&gt;, it included a new
+version of the borrow checker, one that implemented &lt;a href=&quot;https://blog.rust-lang.org/2018/12/06/Rust-1.31-and-rust-2018.html#non-lexical-lifetimes&quot;&gt;&amp;quot;non-lexical
+lifetimes&amp;quot;&lt;/a&gt;. This new borrow checker did a much more precise
+analysis than the original, allowing us to eliminate a lot of
+unnecessary errors and make Rust easier to use. I think most everyone
+who was using Rust 2015 can attest that this shift was a big
+improvement.&lt;/p&gt;
+&lt;h3&gt;&lt;a href=&quot;#the-new-borrow-checker-also-fixed-a-lot-of-bugs&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;the-new-borrow-checker-also-fixed-a-lot-of-bugs&quot;&gt;&lt;/a&gt;The new borrow checker also fixed a lot of bugs&lt;/h3&gt;
+&lt;p&gt;What is perhaps less well understood is that the new borrow checker
+implementation &lt;em&gt;also&lt;/em&gt; fixed a lot of bugs. In other words, the new
+borrow checker did not just accept more programs -- &lt;strong&gt;it also rejected
+some programs that were only accepted in the first place due to memory
+unsafety bugs in the old borrow checker!&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;a href=&quot;#until-recently-those-fixed-bugs-produced-warnings,-not-errors&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;until-recently-those-fixed-bugs-produced-warnings,-not-errors&quot;&gt;&lt;/a&gt;Until recently, those fixed bugs produced warnings, not errors&lt;/h3&gt;
+&lt;p&gt;Obviously, we don't want to accept programs that could undermine
+Rust's safety guarantees. At the same time, as part of our commitment
+to stability, we try to avoid making sudden bug fixes that will affect
+a lot of code. Whenever possible, we prefer to &amp;quot;phase in&amp;quot; those
+changes gradually. We usually begin with &amp;quot;Future Compatibility
+Warnings&amp;quot;, for example, before moving those warnings to hard errors
+(sometimes a small bit at a time). Since the bug fixes to the borrow
+checker affected a lot of crates, we knew we needed a warning period
+before we could make them into hard errors.&lt;/p&gt;
+&lt;p&gt;To implement this warning period, we kept two copies of the borrow
+checker around (this is a trick we use quite frequently, actually).
+The new checker ran first. If it found errors, we didn't report them
+directly: instead, we ran the old checker in order to see if the crate
+&lt;em&gt;used&lt;/em&gt; to compile before. If so, we reported the errors as Future
+Compatibility Warnings, since we were changing something that used to
+compile into errors.&lt;/p&gt;
+&lt;h3&gt;&lt;a href=&quot;#all-good-things-must-come-to-an-end-and-bad-ones,-too&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;all-good-things-must-come-to-an-end-and-bad-ones,-too&quot;&gt;&lt;/a&gt;All good things must come to an end; and bad ones, too&lt;/h3&gt;
+&lt;p&gt;Over time we have been slowly transitioning those future compatibility
+warnings into errors, a bit at a time. About two months ago, we
+decided that the time had come to finish the job. So, over the course
+of two PRs, we &lt;a href=&quot;https://github.com/rust-lang/rust/pull/63565&quot;&gt;converted all remaining warnings to errors&lt;/a&gt; and
+then &lt;a href=&quot;https://github.com/rust-lang/rust/pull/64790&quot;&gt;removed the old borrow checker implementation&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;&lt;a href=&quot;#what-this-means-for-you&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;what-this-means-for-you&quot;&gt;&lt;/a&gt;What this means for you&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;If you are testing your package with nightly, then you should be
+fine.&lt;/strong&gt; In fact, even if you build on stable, we always recommend that
+you test your builds in CI with the nightly build, so that you can
+identify upcoming issues early and report them to us.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Otherwise, you may want to check your dependencies.&lt;/strong&gt; When we
+decided to remove the old borrow checker, we also analyzed which
+crates would stop compiling. For anything that seemed to be widely
+used, we made sure that there were newer versions of that crate
+available that &lt;em&gt;do&lt;/em&gt; compile (for the most part, this had all already
+happened during the warning period). But if you have those older
+versions in your &lt;code&gt;Cargo.lock&lt;/code&gt; file, and you are only using stable
+builds, then you may find that your code no longer builds once 1.40.0
+is released -- you will have to upgrade the dependency.&lt;/p&gt;
+&lt;p&gt;The most common crates that were affected are the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;url&lt;/code&gt; version 1.7.0 -- you can upgrade to 1.7.2, though you'd be better off upgrading to 2.1.0&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;nalgebra&lt;/code&gt; version 0.16.13 -- you can upgrade to 0.16.14, though you'd be better off upgrading to 0.19.0&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;rusttype&lt;/code&gt; version 0.2.0 to 0.2.3 -- you can upgrade to 0.2.4, though you'd be better upgrading to 0.8.1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can find out which crates you rely upon using the &lt;a href=&quot;https://crates.io/crates/cargo-tree&quot;&gt;cargo-tree&lt;/a&gt; command. If you find
+that you &lt;em&gt;do&lt;/em&gt; rely (say) on &lt;code&gt;url&lt;/code&gt; 1.7.0, you can upgrade to 1.7.2 by executing:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;cargo update --package url --precise 1.7.2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;&lt;a href=&quot;#want-to-learn-more&quot; aria-hidden=&quot;true&quot; class=&quot;anchor&quot; id=&quot;want-to-learn-more&quot;&gt;&lt;/a&gt;Want to learn more?&lt;/h3&gt;
+&lt;p&gt;If you'd like to learn more about the kinds of bugs that were fixed --
+or if you are seeing errors in your code that you need to fix -- take
+a look at this &lt;a href=&quot;http://blog.pnkfx.org/blog/2019/06/26/breaking-news-non-lexical-lifetimes-arrives-for-everyone/&quot;&gt;excellent blog post by Felix Klock&lt;/a&gt;, which
+goes into great detail.&lt;/p&gt;
+</content>
+
+        <author>
+            <name>Niko Matsakis</name>
+        </author>
+    </entry>
     
     <entry>
         <title>A call for blogs 2020</title>
@@ -697,22 +785,6 @@ without all of you. &lt;a href=&quot;https://thanks.rust-lang.org/rust/1.36.0/&q
 
         <author>
             <name>The Rust Release Team</name>
-        </author>
-    </entry>
-    
-    <entry>
-        <title>The Governance WG is going public</title>
-        <link rel="alternate" href="https://blog.rust-lang.org/2019/06/03/governance-wg-announcement.html" type="text/html" title="The Governance WG is going public" />
-        <published>2019-06-03T00:00:00Z</published>
-        <updated>2019-06-03T00:00:00Z</updated>
-        <id>https://blog.rust-lang.org/2019/06/03/governance-wg-announcement.html</id>
-        <content type="html" xml:base="https://blog.rust-lang.org/2019/06/03/governance-wg-announcement.html">&lt;p&gt;Hey all! Today we're happy to announce the &lt;a href=&quot;https://internals.rust-lang.org/t/governance-working-group-announcement/9637&quot;&gt;Governance Working Group&lt;/a&gt; is going public. We've been spending the last couple weeks finding our bearings and structuring the working group.&lt;/p&gt;
-&lt;p&gt;You can find &lt;a href=&quot;https://github.com/rust-lang/wg-governance/blob/master/CHARTER.md&quot;&gt;our charter&lt;/a&gt; outlining our main goals and priorities in &lt;a href=&quot;https://github.com/rust-lang/wg-governance&quot;&gt;our work repository&lt;/a&gt;. We are using the Github issues, milestones and projects to organise and track our progress. The &lt;a href=&quot;https://github.com/rust-lang/wg-governance/&quot;&gt;readme in the repository&lt;/a&gt; explains our working process a bit more in detail. It also states how you can talk to us (hint, via discord) and &lt;a href=&quot;https://github.com/rust-lang/wg-governance/#how-can-i-get-involved&quot;&gt;get involved&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;If you're interested in the governance working group, you may also be interested in the &lt;a href=&quot;https://internals.rust-lang.org/t/lang-team-meta-working-group/9989&quot;&gt;Lang Team Meta WG&lt;/a&gt;, which is exploring solutions specific to the lang team.&lt;/p&gt;
-</content>
-
-        <author>
-            <name>The Rust Governance WG</name>
         </author>
     </entry>
     
